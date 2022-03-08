@@ -9,7 +9,9 @@ import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
 import javax.print.attribute.Size2DSyntax;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import net.devicemanagement.controller.DataController;
@@ -20,6 +22,10 @@ import net.devicemanagement.view.model.Laptop;
 import net.devicemanagement.view.model.Monitor;
 import net.devicemanagement.view.model.Pc;
 import net.devicemanagement.view.model.Phone;
+import javax.swing.DefaultListModel;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 /**
  *
@@ -63,7 +69,8 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
         tableModelBorrowing = (DefaultTableModel) tblBorrowing.getModel();
         //khi ứng dụng được kích hoạt, dữ liệu tự load và hiển thị lên
         dataController = new DataControllerImp();
-        simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");       
+        simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+
         LoadData();
         ShowData();
     }
@@ -212,6 +219,26 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
         btnRefreshBorrowing = new javax.swing.JButton();
         btnAddBorrowing = new javax.swing.JButton();
         btnRemoveBorrowing = new javax.swing.JButton();
+        jPanel19 = new javax.swing.JPanel();
+        txtTotalBorrowing = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        txtTotalGiveBack = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jScrollPane7 = new javax.swing.JScrollPane();
+        jListEmployee = new javax.swing.JList<>();
+        jLabel7 = new javax.swing.JLabel();
+        txtTotalEm = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        jScrollPane10 = new javax.swing.JScrollPane();
+        tblGivebackHistory = new javax.swing.JTable();
+        jScrollPane11 = new javax.swing.JScrollPane();
+        tblBorrowingHistory = new javax.swing.JTable();
+        comboSearchEmployeeByDept1 = new javax.swing.JComboBox<>();
+        comboSearchEmployeeStaticstic = new javax.swing.JComboBox<>();
+        btnSearchEmployee1 = new javax.swing.JButton();
+        btnRefreshStaticstic = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -330,7 +357,7 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
                     .addComponent(txtSearchPhoneByImei)
                     .addComponent(txtSearchPhoneByName)
                     .addComponent(comboSearchPhoneByPhase, 0, 256, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 102, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 362, Short.MAX_VALUE)
                 .addComponent(btnSearchPhone, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(32, 32, 32))
         );
@@ -426,13 +453,13 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
                     .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 308, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnRefreshPhone)
                     .addComponent(btnAddPhone)
                     .addComponent(btnEditPhone)
                     .addComponent(btnRemovePhone))
-                .addContainerGap(23, Short.MAX_VALUE))
+                .addContainerGap(34, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("QUẢN LÝ ĐIỆN THOẠI", jPanel1);
@@ -547,7 +574,7 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
                     .addComponent(rbSearchPcBySerial))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtSearchPcByName, javax.swing.GroupLayout.DEFAULT_SIZE, 295, Short.MAX_VALUE)
+                    .addComponent(txtSearchPcByName, javax.swing.GroupLayout.DEFAULT_SIZE, 555, Short.MAX_VALUE)
                     .addComponent(txtSearchPcBySerial)
                     .addComponent(txtSearchPcByRam))
                 .addGap(18, 18, 18)
@@ -649,13 +676,13 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
                     .addComponent(jPanel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 308, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnRefreshPc)
                     .addComponent(btnAddPc)
                     .addComponent(btnEditPc)
                     .addComponent(btnRemovePc))
-                .addContainerGap(21, Short.MAX_VALUE))
+                .addContainerGap(32, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("QUẢN LÝ PC", jPanel2);
@@ -770,7 +797,7 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
                     .addComponent(rbSearchLaptopBySerial))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtSearchLaptopByName, javax.swing.GroupLayout.DEFAULT_SIZE, 295, Short.MAX_VALUE)
+                    .addComponent(txtSearchLaptopByName, javax.swing.GroupLayout.DEFAULT_SIZE, 555, Short.MAX_VALUE)
                     .addComponent(txtSearchLaptopBySerial)
                     .addComponent(txtSearchLaptopByRam))
                 .addGap(18, 18, 18)
@@ -868,13 +895,13 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
                     .addComponent(jPanel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 308, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnRefreshLaptop)
                     .addComponent(btnAddLaptop)
                     .addComponent(btnEditLaptop)
                     .addComponent(btnRemoveLaptop))
-                .addContainerGap(21, Short.MAX_VALUE))
+                .addContainerGap(32, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("QUẢN LÝ LAPTOP", jPanel3);
@@ -989,11 +1016,9 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
                     .addComponent(rbSearchMonitorBySerial))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtSearchMonitorByName)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel14Layout.createSequentialGroup()
-                        .addComponent(txtSearchMonitorBySize, javax.swing.GroupLayout.PREFERRED_SIZE, 261, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(txtSearchMonitorBySerial))
+                    .addComponent(txtSearchMonitorByName, javax.swing.GroupLayout.DEFAULT_SIZE, 521, Short.MAX_VALUE)
+                    .addComponent(txtSearchMonitorBySerial)
+                    .addComponent(txtSearchMonitorBySize))
                 .addGap(18, 18, 18)
                 .addComponent(btnSearchMonitor, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(32, 32, 32))
@@ -1094,13 +1119,13 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
                     .addComponent(jPanel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 308, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnRefreshMonitor)
                     .addComponent(btnAddMonitor)
                     .addComponent(btnEditMonitor)
                     .addComponent(btnRemoveMonitor))
-                .addContainerGap(21, Short.MAX_VALUE))
+                .addContainerGap(32, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("QUẢN LÝ MÀN HÌNH", jPanel4);
@@ -1209,19 +1234,14 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
                     .addComponent(rbSearchEmployeeByName, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(rbSearchEmployeeByDept)
                     .addComponent(rbSearchEmployeeById))
+                .addGap(23, 23, 23)
                 .addGroup(jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel16Layout.createSequentialGroup()
-                        .addGap(23, 23, 23)
-                        .addComponent(txtSearchEmployeeById, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel16Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
-                        .addGroup(jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(comboSearchEmployeeByDept, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtSearchEmployeeByName, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addComponent(btnSearchEmployee, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(20, 20, 20))))
+                    .addComponent(txtSearchEmployeeByName)
+                    .addComponent(txtSearchEmployeeById)
+                    .addComponent(comboSearchEmployeeByDept, javax.swing.GroupLayout.Alignment.TRAILING, 0, 516, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(btnSearchEmployee, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(20, 20, 20))
         );
         jPanel16Layout.setVerticalGroup(
             jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1315,18 +1335,19 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
                     .addComponent(jPanel16, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 308, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnRefreshEmployee)
                     .addComponent(btnAddEmployee)
                     .addComponent(btnEditEmployee)
                     .addComponent(btnRemoveEmployee))
-                .addContainerGap(23, Short.MAX_VALUE))
+                .addContainerGap(34, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("THÔNG TIN NHÂN VIÊN", jPanel5);
 
         jPanel17.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Sắp xếp danh sách mượn", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 14))); // NOI18N
+        jPanel17.setName(""); // NOI18N
 
         rbSortBorrowingNameASC.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         rbSortBorrowingNameASC.setText("Theo tên a-z");
@@ -1452,26 +1473,22 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
                     .addComponent(rbSearchBorrowingByDate)
                     .addComponent(rbSearchBorrowingByName)
                     .addComponent(rbSearchBorrowingById))
-                .addGap(22, 22, 22)
-                .addGroup(jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel18Layout.createSequentialGroup()
+                .addGap(22, 282, Short.MAX_VALUE)
+                .addGroup(jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel18Layout.createSequentialGroup()
                         .addComponent(txtSearchBorrowingById, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnSearchBorrowing, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel18Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addGroup(jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(jPanel18Layout.createSequentialGroup()
-                                .addComponent(txtSearchBorrowingByName, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(115, 115, 115))
-                            .addGroup(jPanel18Layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addGap(18, 18, 18)
-                                .addComponent(txtSearchBorrowingFrom, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel2)
-                                .addGap(18, 18, 18)
-                                .addComponent(txtSearchBorrowingTo, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(txtSearchBorrowingByName, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel18Layout.createSequentialGroup()
+                            .addComponent(jLabel1)
+                            .addGap(18, 18, 18)
+                            .addComponent(txtSearchBorrowingFrom, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(36, 36, 36)
+                            .addComponent(jLabel2)
+                            .addGap(18, 18, 18)
+                            .addComponent(txtSearchBorrowingTo, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(29, 29, 29))
         );
         jPanel18Layout.setVerticalGroup(
@@ -1479,10 +1496,10 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
             .addGroup(jPanel18Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(rbSearchBorrowingById)
                     .addGroup(jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(rbSearchBorrowingById)
-                        .addComponent(txtSearchBorrowingById, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(btnSearchBorrowing))
+                        .addComponent(btnSearchBorrowing)
+                        .addComponent(txtSearchBorrowingById, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(rbSearchBorrowingByName)
@@ -1565,15 +1582,210 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
                     .addComponent(jPanel18, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 308, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnRefreshBorrowing)
                     .addComponent(btnAddBorrowing)
                     .addComponent(btnRemoveBorrowing))
-                .addContainerGap(23, Short.MAX_VALUE))
+                .addContainerGap(33, Short.MAX_VALUE))
         );
 
+        jPanel18.getAccessibleContext().setAccessibleName("huhu");
+
         jTabbedPane1.addTab("QUẢN LÝ MƯỢN", jPanel6);
+
+        txtTotalBorrowing.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtTotalBorrowing.setText("0");
+
+        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel4.setText("Danh sách nhân viên (click vào để xem lịch sử chi tiết):");
+
+        jLabel5.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel5.setText("Số lượng nhân viên đã trả:");
+
+        txtTotalGiveBack.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtTotalGiveBack.setText("0");
+
+        jLabel6.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel6.setText("Số lượng nhân viên đang mượn:");
+
+        jListEmployee.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jListEmployeeMouseClicked(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jListEmployeeMouseExited(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jListEmployeeMousePressed(evt);
+            }
+        });
+        jListEmployee.addInputMethodListener(new java.awt.event.InputMethodListener() {
+            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
+            }
+            public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
+                jListEmployeeInputMethodTextChanged(evt);
+            }
+        });
+        jScrollPane7.setViewportView(jListEmployee);
+
+        jLabel7.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel7.setText("Lịch sử trả");
+
+        txtTotalEm.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtTotalEm.setText("0");
+
+        jLabel8.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel8.setText("Số lượng nhân viên");
+
+        jLabel9.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel9.setText("Lịch sử mượn");
+
+        tblGivebackHistory.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Mã nhân viên", "Tên nhân viên", "Phòng ban", "Số IMEI/Serial", "Tên thiết bị", "Thời gian mượn"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane10.setViewportView(tblGivebackHistory);
+
+        tblBorrowingHistory.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Mã nhân viên", "Tên nhân viên", "Phòng ban", "Số IMEI/Serial", "Tên thiết bị", "Thời gian mượn"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane11.setViewportView(tblBorrowingHistory);
+
+        comboSearchEmployeeByDept1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        comboSearchEmployeeByDept1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Hành chính", "Nhân sự", "Kế toán", "Quản lý dự án", "Phát triển sản phẩm", "Kiểm thử" }));
+
+        comboSearchEmployeeStaticstic.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        comboSearchEmployeeStaticstic.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Hành chính", "Nhân sự", "Kế toán", "Quản lý dự án", "Phát triển sản phẩm", "Kiểm thử" }));
+
+        btnSearchEmployee1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        btnSearchEmployee1.setText("Tìm");
+        btnSearchEmployee1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                btnSearchEmployee1MousePressed(evt);
+            }
+        });
+
+        btnRefreshStaticstic.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        btnRefreshStaticstic.setText("Làm mới");
+        btnRefreshStaticstic.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRefreshStaticsticActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel19Layout = new javax.swing.GroupLayout(jPanel19);
+        jPanel19.setLayout(jPanel19Layout);
+        jPanel19Layout.setHorizontalGroup(
+            jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel19Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel19Layout.createSequentialGroup()
+                        .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 294, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane10)
+                            .addComponent(jScrollPane11, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel19Layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(jPanel19Layout.createSequentialGroup()
+                        .addGroup(jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel19Layout.createSequentialGroup()
+                                .addComponent(jLabel6)
+                                .addGap(18, 18, 18)
+                                .addComponent(txtTotalBorrowing, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel5)
+                                .addGap(18, 18, 18)
+                                .addComponent(txtTotalGiveBack, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel8)
+                                .addGap(18, 18, 18)
+                                .addComponent(txtTotalEm, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel19Layout.createSequentialGroup()
+                                .addComponent(jLabel4)
+                                .addGap(18, 18, 18)
+                                .addComponent(comboSearchEmployeeStaticstic, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(btnSearchEmployee1, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnRefreshStaticstic)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 410, Short.MAX_VALUE)
+                        .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
+            .addGroup(jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel19Layout.createSequentialGroup()
+                    .addGap(383, 383, 383)
+                    .addComponent(comboSearchEmployeeByDept1, 0, 516, Short.MAX_VALUE)
+                    .addGap(383, 383, 383)))
+        );
+        jPanel19Layout.setVerticalGroup(
+            jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel19Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtTotalBorrowing, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtTotalGiveBack, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtTotalEm, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel19Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(comboSearchEmployeeStaticstic, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnSearchEmployee1)
+                            .addComponent(btnRefreshStaticstic)))
+                    .addGroup(jPanel19Layout.createSequentialGroup()
+                        .addGap(21, 21, 21)
+                        .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel19Layout.createSequentialGroup()
+                        .addComponent(jScrollPane11, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(6, 6, 6)
+                        .addComponent(jScrollPane10, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE))
+                    .addComponent(jScrollPane7))
+                .addContainerGap())
+            .addGroup(jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel19Layout.createSequentialGroup()
+                    .addGap(273, 273, 273)
+                    .addComponent(comboSearchEmployeeByDept1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(273, Short.MAX_VALUE)))
+        );
+
+        jTabbedPane1.addTab("THỐNG KÊ NHÂN VIÊN", jPanel19);
 
         jMenu1.setText("File");
 
@@ -1613,206 +1825,42 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void btnAddPhoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddPhoneActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnAddPhoneActionPerformed
-
-    private void btnRefreshPhoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshPhoneActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnRefreshPhoneActionPerformed
-
-    private void rbSortPhoneNameASCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSortPhoneNameASCActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_rbSortPhoneNameASCActionPerformed
-
-    private void rbSortPhonePhaseDESCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSortPhonePhaseDESCActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_rbSortPhonePhaseDESCActionPerformed
-
-    private void rbSortPhonePhaseASCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSortPhonePhaseASCActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_rbSortPhonePhaseASCActionPerformed
-
-    private void rbSearchPhoneByNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSearchPhoneByNameActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_rbSearchPhoneByNameActionPerformed
-
-    private void txtSearchPhoneByImeiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchPhoneByImeiActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtSearchPhoneByImeiActionPerformed
-
-    private void rbSearchPhoneByPhaseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSearchPhoneByPhaseActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_rbSearchPhoneByPhaseActionPerformed
 //Menu item thoát ứng dụng
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         dispose();
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
-    private void rbSortChipPcASCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSortChipPcASCActionPerformed
+    private void btnAddBorrowingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddBorrowingActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_rbSortChipPcASCActionPerformed
-
-    private void rbSortRamPcASCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSortRamPcASCActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_rbSortRamPcASCActionPerformed
-
-    private void rbSortRamPcDESCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSortRamPcDESCActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_rbSortRamPcDESCActionPerformed
-
-    private void rbSearchPcByNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSearchPcByNameActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_rbSearchPcByNameActionPerformed
-
-    private void txtSearchPcBySerialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchPcBySerialActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtSearchPcBySerialActionPerformed
-
-    private void rbSearchPcByRamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSearchPcByRamActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_rbSearchPcByRamActionPerformed
-
-    private void btnRefreshPcActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshPcActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnRefreshPcActionPerformed
-
-    private void btnAddPcActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddPcActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnAddPcActionPerformed
-
-    private void rbSortChipPcDESCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSortChipPcDESCActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_rbSortChipPcDESCActionPerformed
-
-    private void rbSortChipLaptopASCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSortChipLaptopASCActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_rbSortChipLaptopASCActionPerformed
-
-    private void rbSortChipLaptopDESCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSortChipLaptopDESCActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_rbSortChipLaptopDESCActionPerformed
-
-    private void rbSortRamLaptopASCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSortRamLaptopASCActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_rbSortRamLaptopASCActionPerformed
-
-    private void rbSortRamLaptopDESCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSortRamLaptopDESCActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_rbSortRamLaptopDESCActionPerformed
-
-    private void rbSearchLaptopByNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSearchLaptopByNameActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_rbSearchLaptopByNameActionPerformed
-
-    private void txtSearchLaptopBySerialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchLaptopBySerialActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtSearchLaptopBySerialActionPerformed
-
-    private void rbSearchLaptopByRamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSearchLaptopByRamActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_rbSearchLaptopByRamActionPerformed
-
-    private void btnRefreshLaptopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshLaptopActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnRefreshLaptopActionPerformed
-
-    private void btnAddLaptopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddLaptopActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnAddLaptopActionPerformed
-
-    private void rbSortNameMonitorASCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSortNameMonitorASCActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_rbSortNameMonitorASCActionPerformed
-
-    private void rbSortNameMonitorDESCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSortNameMonitorDESCActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_rbSortNameMonitorDESCActionPerformed
-
-    private void rbSortSizeMonitorASCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSortSizeMonitorASCActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_rbSortSizeMonitorASCActionPerformed
-
-    private void rbSortSizeMonitorDESCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSortSizeMonitorDESCActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_rbSortSizeMonitorDESCActionPerformed
-
-    private void rbSearchMonitorByNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSearchMonitorByNameActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_rbSearchMonitorByNameActionPerformed
-
-    private void txtSearchMonitorBySerialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchMonitorBySerialActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtSearchMonitorBySerialActionPerformed
-
-    private void rbSearchMonitorBySizeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSearchMonitorBySizeActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_rbSearchMonitorBySizeActionPerformed
-
-    private void btnRefreshMonitorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshMonitorActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnRefreshMonitorActionPerformed
-
-    private void btnAddMonitorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddMonitorActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnAddMonitorActionPerformed
-
-    private void btnEditMonitorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditMonitorActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnEditMonitorActionPerformed
-
-    private void rbSortEmployeeNameASCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSortEmployeeNameASCActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_rbSortEmployeeNameASCActionPerformed
-
-    private void rbSortEmployeeIdASCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSortEmployeeIdASCActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_rbSortEmployeeIdASCActionPerformed
-
-    private void rbSortEmployeeIdDESCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSortEmployeeIdDESCActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_rbSortEmployeeIdDESCActionPerformed
-
-    private void rbSearchEmployeeByNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSearchEmployeeByNameActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_rbSearchEmployeeByNameActionPerformed
-
-    private void txtSearchEmployeeByIdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchEmployeeByIdActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtSearchEmployeeByIdActionPerformed
-
-    private void rbSearchEmployeeByDeptActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSearchEmployeeByDeptActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_rbSearchEmployeeByDeptActionPerformed
-
-    private void btnRefreshEmployeeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshEmployeeActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnRefreshEmployeeActionPerformed
-
-    private void btnAddEmployeeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddEmployeeActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnAddEmployeeActionPerformed
-
-    private void rbSearchBorrowingByNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSearchBorrowingByNameActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_rbSearchBorrowingByNameActionPerformed
-
-    private void txtSearchBorrowingByIdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchBorrowingByIdActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtSearchBorrowingByIdActionPerformed
-
-    private void rbSearchBorrowingByDateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSearchBorrowingByDateActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_rbSearchBorrowingByDateActionPerformed
+    }//GEN-LAST:event_btnAddBorrowingActionPerformed
 
     private void btnRefreshBorrowingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshBorrowingActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnRefreshBorrowingActionPerformed
 
-    private void btnAddBorrowingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddBorrowingActionPerformed
+    private void txtSearchBorrowingToActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchBorrowingToActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnAddBorrowingActionPerformed
+    }//GEN-LAST:event_txtSearchBorrowingToActionPerformed
+
+    private void txtSearchBorrowingFromActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchBorrowingFromActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtSearchBorrowingFromActionPerformed
+
+    private void rbSearchBorrowingByDateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSearchBorrowingByDateActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rbSearchBorrowingByDateActionPerformed
+
+    private void txtSearchBorrowingByIdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchBorrowingByIdActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtSearchBorrowingByIdActionPerformed
+
+    private void rbSearchBorrowingByNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSearchBorrowingByNameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rbSearchBorrowingByNameActionPerformed
+
+    private void rbSearchBorrowingByIdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSearchBorrowingByIdActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rbSearchBorrowingByIdActionPerformed
 
     private void rbSortBorrowingDateDESCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSortBorrowingDateDESCActionPerformed
         // TODO add your handling code here:
@@ -1826,17 +1874,270 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
         // TODO add your handling code here:
     }//GEN-LAST:event_rbSortBorrowingNameASCActionPerformed
 
-    private void rbSearchBorrowingByIdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSearchBorrowingByIdActionPerformed
+    private void btnAddEmployeeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddEmployeeActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_rbSearchBorrowingByIdActionPerformed
+    }//GEN-LAST:event_btnAddEmployeeActionPerformed
 
-    private void txtSearchBorrowingFromActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchBorrowingFromActionPerformed
+    private void btnRefreshEmployeeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshEmployeeActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtSearchBorrowingFromActionPerformed
+    }//GEN-LAST:event_btnRefreshEmployeeActionPerformed
 
-    private void txtSearchBorrowingToActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchBorrowingToActionPerformed
+    private void rbSearchEmployeeByDeptActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSearchEmployeeByDeptActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtSearchBorrowingToActionPerformed
+    }//GEN-LAST:event_rbSearchEmployeeByDeptActionPerformed
+
+    private void txtSearchEmployeeByIdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchEmployeeByIdActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtSearchEmployeeByIdActionPerformed
+
+    private void rbSearchEmployeeByNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSearchEmployeeByNameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rbSearchEmployeeByNameActionPerformed
+
+    private void rbSortEmployeeIdDESCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSortEmployeeIdDESCActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rbSortEmployeeIdDESCActionPerformed
+
+    private void rbSortEmployeeIdASCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSortEmployeeIdASCActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rbSortEmployeeIdASCActionPerformed
+
+    private void rbSortEmployeeNameASCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSortEmployeeNameASCActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rbSortEmployeeNameASCActionPerformed
+
+    private void btnEditMonitorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditMonitorActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnEditMonitorActionPerformed
+
+    private void btnAddMonitorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddMonitorActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnAddMonitorActionPerformed
+
+    private void btnRefreshMonitorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshMonitorActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnRefreshMonitorActionPerformed
+
+    private void rbSearchMonitorBySizeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSearchMonitorBySizeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rbSearchMonitorBySizeActionPerformed
+
+    private void txtSearchMonitorBySerialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchMonitorBySerialActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtSearchMonitorBySerialActionPerformed
+
+    private void rbSearchMonitorByNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSearchMonitorByNameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rbSearchMonitorByNameActionPerformed
+
+    private void rbSortSizeMonitorDESCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSortSizeMonitorDESCActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rbSortSizeMonitorDESCActionPerformed
+
+    private void rbSortSizeMonitorASCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSortSizeMonitorASCActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rbSortSizeMonitorASCActionPerformed
+
+    private void rbSortNameMonitorDESCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSortNameMonitorDESCActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rbSortNameMonitorDESCActionPerformed
+
+    private void rbSortNameMonitorASCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSortNameMonitorASCActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rbSortNameMonitorASCActionPerformed
+
+    private void btnAddLaptopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddLaptopActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnAddLaptopActionPerformed
+
+    private void btnRefreshLaptopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshLaptopActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnRefreshLaptopActionPerformed
+
+    private void rbSearchLaptopByRamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSearchLaptopByRamActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rbSearchLaptopByRamActionPerformed
+
+    private void txtSearchLaptopBySerialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchLaptopBySerialActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtSearchLaptopBySerialActionPerformed
+
+    private void rbSearchLaptopByNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSearchLaptopByNameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rbSearchLaptopByNameActionPerformed
+
+    private void rbSortRamLaptopDESCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSortRamLaptopDESCActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rbSortRamLaptopDESCActionPerformed
+
+    private void rbSortRamLaptopASCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSortRamLaptopASCActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rbSortRamLaptopASCActionPerformed
+
+    private void rbSortChipLaptopDESCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSortChipLaptopDESCActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rbSortChipLaptopDESCActionPerformed
+
+    private void rbSortChipLaptopASCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSortChipLaptopASCActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rbSortChipLaptopASCActionPerformed
+
+    private void btnAddPcActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddPcActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnAddPcActionPerformed
+
+    private void btnRefreshPcActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshPcActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnRefreshPcActionPerformed
+
+    private void rbSearchPcByRamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSearchPcByRamActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rbSearchPcByRamActionPerformed
+
+    private void txtSearchPcBySerialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchPcBySerialActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtSearchPcBySerialActionPerformed
+
+    private void rbSearchPcByNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSearchPcByNameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rbSearchPcByNameActionPerformed
+
+    private void rbSortRamPcDESCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSortRamPcDESCActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rbSortRamPcDESCActionPerformed
+
+    private void rbSortRamPcASCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSortRamPcASCActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rbSortRamPcASCActionPerformed
+
+    private void rbSortChipPcDESCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSortChipPcDESCActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rbSortChipPcDESCActionPerformed
+
+    private void rbSortChipPcASCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSortChipPcASCActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rbSortChipPcASCActionPerformed
+
+    private void btnRefreshPhoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshPhoneActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnRefreshPhoneActionPerformed
+
+    private void btnAddPhoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddPhoneActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnAddPhoneActionPerformed
+
+    private void rbSearchPhoneByPhaseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSearchPhoneByPhaseActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rbSearchPhoneByPhaseActionPerformed
+
+    private void txtSearchPhoneByImeiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchPhoneByImeiActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtSearchPhoneByImeiActionPerformed
+
+    private void rbSearchPhoneByNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSearchPhoneByNameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rbSearchPhoneByNameActionPerformed
+
+    private void rbSortPhonePhaseDESCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSortPhonePhaseDESCActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rbSortPhonePhaseDESCActionPerformed
+
+    private void rbSortPhonePhaseASCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSortPhonePhaseASCActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rbSortPhonePhaseASCActionPerformed
+
+    private void rbSortPhoneNameASCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSortPhoneNameASCActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rbSortPhoneNameASCActionPerformed
+
+    private void jListEmployeeInputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_jListEmployeeInputMethodTextChanged
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jListEmployeeInputMethodTextChanged
+
+
+    private void jListEmployeeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jListEmployeeMouseClicked
+////        jListEmployee
+//        if(jListEmployee.getSelectedIndex() != -1){
+//            System.out.println(jListEmployee.getSelectedValue());
+//        }
+
+
+    }//GEN-LAST:event_jListEmployeeMouseClicked
+    /**
+     *
+     * Click vao moi item tron jList thi bang hien thi lich su se duoc cap nhap
+     * theo dung nguoi nhan vien do
+     *
+     * @param evt
+     */
+    private void jListEmployeeMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jListEmployeeMousePressed
+        if (jListEmployee.getSelectedIndex() != -1) {
+            System.out.println(jListEmployee.getSelectedValue());
+            String fullName = jListEmployee.getSelectedValue();
+            DefaultTableModel model = (DefaultTableModel) tblBorrowingHistory.getModel();
+
+            model.setRowCount(0);
+            for (Borrowing r : borrowings) {
+                Object[] row;
+//                = new Object[]{};
+//                    r.getEmployee().getEmployeeId(), r.getEmployee().getFullName(),
+//                    r.getEmployee().getEmployeeDept(),
+//                    r.getPhone().getImei(), r.getPhone().getName(),
+//                    simpleDateFormat.format(r.getBorrowingDate())
+
+                if (r.getEmployee().getFullName().equals(fullName)) {
+                    row = new Object[]{
+                        r.getEmployee().getEmployeeId(), r.getEmployee().getFullName(),
+                        r.getEmployee().getEmployeeDept(),
+                        r.getPhone().getImei(), r.getPhone().getName(),
+                        simpleDateFormat.format(r.getBorrowingDate())
+                    };
+                    model.addRow(row); //thêm các thông số bên trên vào bảng
+                }
+
+            }
+        }
+
+
+    }//GEN-LAST:event_jListEmployeeMousePressed
+
+    private void jListEmployeeMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jListEmployeeMouseExited
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jListEmployeeMouseExited
+
+    private void btnSearchEmployee1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSearchEmployee1MousePressed
+        String item = String.valueOf(comboSearchEmployeeStaticstic.getSelectedItem()).toString();
+//       jListEmployee
+//        var key = comboSearchEmployeeByDept.getSelectedItem().toString();
+        var result = dataController.searchEmployeeByDept(employees, item);
+        employees.clear();
+        employees.addAll(result);
+        if (employees.size() > 0) {
+            DefaultListModel listModel = new DefaultListModel();
+            for (Employee e : employees) {
+                listModel.addElement(e.getFullName());
+            }
+            jListEmployee.setModel(listModel);
+            var msg = "Tìm thấy " + employees.size() + " kết quả";
+            showDialogMessage(msg);
+        } else {
+            var msg = "Không tìm thấy kết quả nào";
+            showDialogMessage(msg);
+
+        }
+
+    }//GEN-LAST:event_btnSearchEmployee1MousePressed
+
+    private void btnRefreshStaticsticActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshStaticsticActionPerformed
+        comboSearchEmployeeStaticstic.setSelectedIndex(0);
+
+        employees.clear();
+        employees.addAll(dataController.<Employee>readDataFromFile(DataController.EMPLOYEE_FILE));
+        showEmployees();
+        showEmployeeToList();
+
+
+    }//GEN-LAST:event_btnRefreshStaticsticActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1891,6 +2192,7 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
     private javax.swing.JButton btnRefreshMonitor;
     private javax.swing.JButton btnRefreshPc;
     private javax.swing.JButton btnRefreshPhone;
+    private javax.swing.JButton btnRefreshStaticstic;
     private javax.swing.JButton btnRemoveBorrowing;
     private javax.swing.JButton btnRemoveEmployee;
     private javax.swing.JButton btnRemoveLaptop;
@@ -1899,6 +2201,7 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
     private javax.swing.JButton btnRemovePhone;
     private javax.swing.JButton btnSearchBorrowing;
     private javax.swing.JButton btnSearchEmployee;
+    private javax.swing.JButton btnSearchEmployee1;
     private javax.swing.JButton btnSearchLaptop;
     private javax.swing.JButton btnSearchMonitor;
     private javax.swing.JButton btnSearchPc;
@@ -1916,9 +2219,18 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
     private javax.swing.ButtonGroup buttonGroupSortPc;
     private javax.swing.ButtonGroup buttonGroupSortPhone;
     private javax.swing.JComboBox<String> comboSearchEmployeeByDept;
+    private javax.swing.JComboBox<String> comboSearchEmployeeByDept1;
+    private javax.swing.JComboBox<String> comboSearchEmployeeStaticstic;
     private javax.swing.JComboBox<String> comboSearchPhoneByPhase;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
+    private javax.swing.JList<String> jListEmployee;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
@@ -1933,6 +2245,7 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
     private javax.swing.JPanel jPanel16;
     private javax.swing.JPanel jPanel17;
     private javax.swing.JPanel jPanel18;
+    private javax.swing.JPanel jPanel19;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
@@ -1942,11 +2255,14 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane10;
+    private javax.swing.JScrollPane jScrollPane11;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
+    private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JRadioButton rbSearchBorrowingByDate;
     private javax.swing.JRadioButton rbSearchBorrowingById;
@@ -1991,7 +2307,9 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
     private javax.swing.JRadioButton rbSortSizeMonitorASC;
     private javax.swing.JRadioButton rbSortSizeMonitorDESC;
     private javax.swing.JTable tblBorrowing;
+    private javax.swing.JTable tblBorrowingHistory;
     private javax.swing.JTable tblEmployee;
+    private javax.swing.JTable tblGivebackHistory;
     private javax.swing.JTable tblLaptop;
     private javax.swing.JTable tblMonitor;
     private javax.swing.JTable tblPc;
@@ -2013,6 +2331,9 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
     private javax.swing.JTextField txtSearchPcBySerial;
     private javax.swing.JTextField txtSearchPhoneByImei;
     private javax.swing.JTextField txtSearchPhoneByName;
+    private javax.swing.JLabel txtTotalBorrowing;
+    private javax.swing.JLabel txtTotalEm;
+    private javax.swing.JLabel txtTotalGiveBack;
     // End of variables declaration//GEN-END:variables
 
     private void addButtonGroup() {
@@ -2215,6 +2536,8 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
         borrowings.add(borrowing);
         showBorrowing(borrowing);
         saveData(DataController.BORROWING);//lưu danh sách mượn
+        DataControllerImp controllerImp = new DataControllerImp();
+
     }
 
     @Override
@@ -2354,10 +2677,10 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
 
     private void showBorrowing(Borrowing r) { //hiển thị thông tin lên bảng
         Object[] row = new Object[]{
-            r.getEmployee().getEmployeeId(), r.getEmployee().getFullName(), 
-            r.getEmployee().getEmployeeDept(), 
-            r.getPhone().getImei(), r.getPhone().getName(),          
-            simpleDateFormat.format(r.getBorrowingDate())           
+            r.getEmployee().getEmployeeId(), r.getEmployee().getFullName(),
+            r.getEmployee().getEmployeeDept(),
+            r.getPhone().getImei(), r.getPhone().getName(),
+            simpleDateFormat.format(r.getBorrowingDate())
         };
         tableModelBorrowing.addRow(row); //thêm các thông số bên trên vào bảng
     }
@@ -2375,6 +2698,8 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
         employees = dataController.<Employee>readDataFromFile(DataController.EMPLOYEE_FILE);
         //đọc danh sách các màn hình
         borrowings = dataController.<Borrowing>readDataFromFile(DataController.BORROWING_FILE);
+        txtTotalBorrowing.setText(String.valueOf(borrowings.size()));
+
     }
 
     private void ShowData() {
@@ -2384,7 +2709,20 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
         showMonitors();
         showEmployees();
         showBorrowings();
+        showEmployeeToList();
 
+    }
+
+    private void showEmployeeToList() {
+        DefaultListModel listModel = new DefaultListModel();
+        for (Employee e : employees) {
+            listModel.addElement(e.getFullName());
+        }
+        jListEmployee.setModel(listModel);
+        /**
+         * set total size for employee and display on Statistic
+         */
+        txtTotalEm.setText(String.valueOf(employees.size()));
     }
 
     private void showPhones() {
@@ -2420,6 +2758,7 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
         for (Employee employee : employees) {
             showEmployee(employee);
         }
+
     }
 
     private void showBorrowings() {
@@ -3085,4 +3424,9 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
         addBorrowingDialog.setVisible(true);
     }
 
+    /**
+     *
+     *
+     *
+     */
 }
