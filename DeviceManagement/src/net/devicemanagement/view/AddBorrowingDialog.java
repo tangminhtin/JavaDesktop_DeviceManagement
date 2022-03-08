@@ -501,29 +501,6 @@ public class AddBorrowingDialog extends javax.swing.JDialog implements ActionLis
         JOptionPane.showMessageDialog(rootPane, msg);
     }
 
-//    private void addNewBorrowing() {
-//        if (employee == null || phone == null) {
-//            var msg = "Vui lòng nhập vào mã nhân viên và số IMEI trước!";
-//            showMessage(msg);
-//        } else {
-//            var currentTime = new Date();
-//            var format = "dd/MM/yyyy HH:mm:ss";
-//            var dateFormat = new SimpleDateFormat(format);
-//            txtBorrowingDate.setText(dateFormat.format(currentTime));
-//            var checker = new InfoFilterImp();
-//            Borrowing r = new Borrowing(employee, phone, currentTime);
-//            if (checker.isRecordExist(borrowings, r)) {
-//                var msg = "Nhân viên " + employee.getFullName() + " đã "
-//                        + "mượn điện thoại " + phone.getName() + " trước đó.";
-//                showMessage(msg);
-//            } else {
-//                homeFrm.addBorrowingCallback(r);
-//                var msg = "Mượn điện thoại thành công!";
-//                showMessage(msg);
-////                dispose();
-//            }
-//        }
-//    }
     private void addNewBorrowing() {
         if (employee == null) {
             var msg = "Vui lòng nhập vào mã nhân viên và số IMEI trước!";
@@ -535,26 +512,49 @@ public class AddBorrowingDialog extends javax.swing.JDialog implements ActionLis
             txtBorrowingDate.setText(dateFormat.format(currentTime));
             var checker = new InfoFilterImp();
             Borrowing r = new Borrowing(employee, phone, pc, laptop, monitor, currentTime);
-            System.out.println(r);
+
+            for (Borrowing b : borrowings) {
+                if (r.getPhone() != null && b.getPhone() != null) {
+                    if (b.getPhone().getImei() == r.getPhone().getImei()) {
+                        var msg = "Thiết bị có IMEI '" + r.getPhone().getImei() + "' đã có người mượn trước đó";
+                        showMessage(msg);
+                        return;
+                    }
+                } else if (r.getPc() != null && b.getPc() != null) {
+                    if (b.getPc().getSerial().equals(r.getPc().getSerial())) {
+                        var msg = "Thiết bị có Serial '" + r.getPc().getSerial() + "' đã có người mượn trước đó";
+                        showMessage(msg);
+                        return;
+                    }
+                } else if (r.getLaptop() != null && b.getLaptop() != null) {
+                    if (b.getLaptop().getSerial().equals(r.getLaptop().getSerial())) {
+                        var msg = "Thiết bị có Serial '" + r.getLaptop().getSerial() + "' đã có người mượn trước đó";
+                        showMessage(msg);
+                        return;
+                    }
+                } else if (r.getMonitor() != null && b.getMonitor() != null) {
+                    if (b.getMonitor().getSerial().equals(r.getMonitor().getSerial())) {
+                        var msg = "Thiết bị có Serial '" + r.getMonitor().getSerial() + "' đã có người mượn trước đó";
+                        showMessage(msg);
+                        return;
+                    }
+                }
+            }
 
             if (checker.isRecordExist(borrowings, r)) {
                 if (r.getPhone() != null) {
                     var msg = "Nhân viên " + r.getEmployee().getFullName() + " đã "
-                            + "mượn điện thoại " + r.getPhone().getName()+ " trước đó.";
+                            + "mượn điện thoại " + r.getPhone().getName() + " trước đó.";
                     showMessage(msg);
-                }
-                
-                if (r.getPc()!= null) {
+                } else if (r.getPc() != null) {
                     var msg = "Nhân viên " + r.getEmployee().getFullName() + " đã "
-                            + "mượn điện thoại " + r.getPc().getName()+ " trước đó.";
+                            + "mượn điện thoại " + r.getPc().getName() + " trước đó.";
                     showMessage(msg);
-                }
-                if (r.getLaptop()!= null) {
+                } else if (r.getLaptop() != null) {
                     var msg = "Nhân viên " + r.getEmployee().getFullName() + " đã "
                             + "mượn điện thoại " + r.getLaptop().getName() + " trước đó.";
                     showMessage(msg);
-                }
-                if (r.getMonitor() != null) {
+                } else if (r.getMonitor() != null) {
                     var msg = "Nhân viên " + r.getEmployee().getFullName() + " đã "
                             + "mượn điện thoại " + r.getMonitor().getName() + " trước đó.";
                     showMessage(msg);
