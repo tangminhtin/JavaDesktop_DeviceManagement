@@ -12,6 +12,7 @@ import java.util.Objects;
  * @author anhbt
  */
 public class Employee extends Person {
+    private static final long serialVersionUID = -2914299155541575572L;
     private String employeeId;
     private String employeeDept;
     private String employeeEmail;
@@ -84,6 +85,11 @@ public class Employee extends Person {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public String toString() {
+        return "Employee{" + "employeeId=" + employeeId + ", employeeDept=" + employeeDept + ", employeeEmail=" + employeeEmail + '}';
     }
 
 

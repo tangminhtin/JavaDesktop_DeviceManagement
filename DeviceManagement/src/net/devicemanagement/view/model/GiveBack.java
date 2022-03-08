@@ -12,33 +12,27 @@ import java.util.Objects;
  *
  * @author Tuan Anh
  */
-public class Borrowing implements Serializable {
-    private static final long serialVersionUID = -369376598309559634L;
+public class GiveBack implements Serializable {
+    private static final long serialVersionUID = 4602209708090925408L;
     private Employee employee;
     private Phone phone;
     private Pc pc;
     private Laptop laptop;
     private Monitor monitor;
-    private Date borrowingDate;
+    private Date giveBackDate;
 
-    public Borrowing() {
+    public GiveBack() {
     }
 
-    public Borrowing(Employee employee, Phone phone, Date borrowingDate) {
-        this.employee = employee;
-        this.phone = phone;
-        this.borrowingDate = borrowingDate;
-    }
-
-    public Borrowing(Employee employee, Phone phone, Pc pc, Laptop laptop, Monitor monitor, Date borrowingDate) {
+    public GiveBack(Employee employee, Phone phone, Pc pc, Laptop laptop, Monitor monitor, Date giveBackDate) {
         this.employee = employee;
         this.phone = phone;
         this.pc = pc;
         this.laptop = laptop;
         this.monitor = monitor;
-        this.borrowingDate = borrowingDate;
+        this.giveBackDate = giveBackDate;
     }
-    
+
     public Employee getEmployee() {
         return employee;
     }
@@ -55,56 +49,18 @@ public class Borrowing implements Serializable {
         this.phone = phone;
     }
 
-    public Date getBorrowingDate() {
-        return borrowingDate;
-    }
-
-    public void setBorrowingDate(Date borrowingDate) {
-        this.borrowingDate = borrowingDate;
-    }
-
     @Override
     public int hashCode() {
         int hash = 7;
         hash = 53 * hash + Objects.hashCode(this.employee);
         hash = 53 * hash + Objects.hashCode(this.phone);
+        hash = 53 * hash + Objects.hashCode(this.pc);
+        hash = 53 * hash + Objects.hashCode(this.laptop);
+        hash = 53 * hash + Objects.hashCode(this.monitor);
         return hash;
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final Borrowing other = (Borrowing) obj;
-        if (!Objects.equals(this.employee, other.employee)) {
-            return false;
-        }
-        if (!Objects.equals(this.phone, other.phone)) {
-            return false;
-        }
-        
-        if (!Objects.equals(this.pc, other.pc)) {
-            return false;
-        }
-        
-        if (!Objects.equals(this.laptop, other.laptop)) {
-            return false;
-        }
-        
-        if (!Objects.equals(this.monitor, other.monitor)) {
-            return false;
-        }
-        return true;
-    }
-    
-        public Pc getPc() {
+    public Pc getPc() {
         return pc;
     }
 
@@ -128,10 +84,47 @@ public class Borrowing implements Serializable {
         this.monitor = monitor;
     }
 
-    @Override
-    public String toString() {
-        return "Borrowing{" + "employee=" + employee + ", phone=" + phone + ", pc=" + pc + ", laptop=" + laptop + ", monitor=" + monitor + ", borrowingDate=" + borrowingDate + '}';
+    public Date getGiveBackDate() {
+        return giveBackDate;
     }
 
-   
+    public void setGiveBackDate(Date giveBackDate) {
+        this.giveBackDate = giveBackDate;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final GiveBack other = (GiveBack) obj;
+        if (!Objects.equals(this.employee, other.employee)) {
+            return false;
+        }
+        if (!Objects.equals(this.phone, other.phone)) {
+            return false;
+        }
+        if (!Objects.equals(this.pc, other.pc)) {
+            return false;
+        }
+        if (!Objects.equals(this.laptop, other.laptop)) {
+            return false;
+        }
+        if (!Objects.equals(this.monitor, other.monitor)) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "GiveBack{" + "employee=" + employee + ", phone=" + phone + ", pc=" + pc + ", laptop=" + laptop + ", monitor=" + monitor + ", giveBackDate=" + giveBackDate + '}';
+    }
+
 }

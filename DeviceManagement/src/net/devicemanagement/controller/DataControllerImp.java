@@ -11,6 +11,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -18,10 +20,18 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import net.devicemanagement.controller.sort.SortBorrowingByEmployeeNameASC;
+import net.devicemanagement.controller.sort.SortBorrowingByEmployeeNameDESC;
+import net.devicemanagement.controller.sort.SortBorrowingDateASC;
+import net.devicemanagement.controller.sort.SortBorrowingDateDESC;
 import net.devicemanagement.controller.sort.SortEmployeeByIdASC;
 import net.devicemanagement.controller.sort.SortEmployeeByIdDESC;
 import net.devicemanagement.controller.sort.SortEmployeeByNameASC;
 import net.devicemanagement.controller.sort.SortEmployeeByNameDESC;
+import net.devicemanagement.controller.sort.SortGiveBackByEmployeeNameASC;
+import net.devicemanagement.controller.sort.SortGiveBackByEmployeeNameDESC;
+import net.devicemanagement.controller.sort.SortGiveBackDateASC;
+import net.devicemanagement.controller.sort.SortGiveBackDateDESC;
 import net.devicemanagement.controller.sort.SortLaptopByChipASC;
 import net.devicemanagement.controller.sort.SortLaptopByChipDESC;
 import net.devicemanagement.controller.sort.SortLaptopByRamASC;
@@ -38,7 +48,9 @@ import net.devicemanagement.controller.sort.SortPhoneByNameASC;
 import net.devicemanagement.controller.sort.SortPhoneByNameDESC;
 import net.devicemanagement.controller.sort.SortPhoneByPhaseASC;
 import net.devicemanagement.controller.sort.SortPhoneByPhaseDESC;
+import net.devicemanagement.view.model.Borrowing;
 import net.devicemanagement.view.model.Employee;
+import net.devicemanagement.view.model.GiveBack;
 import net.devicemanagement.view.model.Laptop;
 import net.devicemanagement.view.model.Monitor;
 import net.devicemanagement.view.model.Pc;
@@ -404,6 +416,204 @@ public class DataControllerImp implements DataController {
             matcher = pattern.matcher(employee.getEmployeeDept());
             if (matcher.matches()) {
                 resultList.add(employee);
+            }
+        }
+        return resultList;
+    }
+
+    @Override
+    public void sortBorrowingByEmployeeNameASC(List<Borrowing> borrowings) {
+        Collections.sort(borrowings, new SortBorrowingByEmployeeNameASC());
+    }
+
+    @Override
+    public void sortBorrowingByEmployeeNameDESC(List<Borrowing> borrowings) {
+        Collections.sort(borrowings, new SortBorrowingByEmployeeNameDESC());
+    }
+
+    @Override
+    public void sortBorrowingDateASC(List<Borrowing> borrowings) {
+        Collections.sort(borrowings, new SortBorrowingDateASC());
+    }
+
+    @Override
+    public void sortBorrowingDateDESC(List<Borrowing> borrowings) {
+        Collections.sort(borrowings, new SortBorrowingDateDESC());
+    }
+
+    @Override
+    public List<Borrowing> searchBorrowingBySerial(List<Borrowing> borrowings, String key) {
+        List<Borrowing> resultList = new ArrayList<>();
+        var regex = ".*" + key + ".*";
+        Pattern pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
+        Matcher matcher;
+
+        for (Borrowing borrowing : borrowings) {
+            if (borrowing.getPhone() != null) {
+                var imeiStr = Long.toString(borrowing.getPhone().getImei());
+                matcher = pattern.matcher(imeiStr);
+                if (matcher.matches()) {
+                    resultList.add(borrowing);
+                }
+            }
+
+            if (borrowing.getPc() != null) {
+                matcher = pattern.matcher(borrowing.getPc().getSerial());
+                if (matcher.matches()) {
+                    resultList.add(borrowing);
+                }
+            }
+
+            if (borrowing.getLaptop() != null) {
+                matcher = pattern.matcher(borrowing.getLaptop().getSerial());
+                if (matcher.matches()) {
+                    resultList.add(borrowing);
+                }
+            }
+
+            if (borrowing.getMonitor() != null) {
+                matcher = pattern.matcher(borrowing.getMonitor().getSerial());
+                if (matcher.matches()) {
+                    resultList.add(borrowing);
+                }
+            }
+
+        }
+
+        return resultList;
+    }
+
+    @Override
+    public List<Borrowing> searchBorrowingByEmployeeName(List<Borrowing> borrowings, String key) {
+        List<Borrowing> resultList = new ArrayList<>();
+        var regex = ".*" + key + ".*";
+        Pattern pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
+        Matcher matcher;
+        for (Borrowing borrowing : borrowings) {
+            matcher = pattern.matcher(borrowing.getEmployee().getFullName());
+            if (matcher.matches()) {
+                resultList.add(borrowing);
+            }
+        }
+        return resultList;
+
+    }
+
+    @Override
+    public List<Borrowing> searchBorrowingByDate(List<Borrowing> borrowings, String fromDate, String toDate) {
+        List<Borrowing> resultList = new ArrayList<>();
+        var regex = ".*" + fromDate + ".*";
+        Pattern pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
+        Matcher matcher;
+        for (Borrowing borrowing : borrowings) {
+            try {
+                matcher = pattern.matcher(borrowing.getBorrowingDate().toString());
+                var format = "dd/MM/yyyy";
+                var dateFormat = new SimpleDateFormat(format);
+                if (borrowing.getBorrowingDate().after(dateFormat.parse(fromDate)) && borrowing.getBorrowingDate().before(dateFormat.parse(toDate))) {
+                    resultList.add(borrowing);
+                }
+            } catch (ParseException ex) {
+                Logger.getLogger(DataControllerImp.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return resultList;
+
+    }
+
+    @Override
+    public void sortGiveBackByEmployeeNameASC(List<GiveBack> giveBacks) {
+        Collections.sort(giveBacks, new SortGiveBackByEmployeeNameASC());
+    }
+
+    @Override
+    public void sortGiveBackByEmployeeNameDESC(List<GiveBack> giveBacks) {
+        Collections.sort(giveBacks, new SortGiveBackByEmployeeNameDESC());
+    }
+
+    @Override
+    public void sortGiveBackDateASC(List<GiveBack> giveBacks) {
+        Collections.sort(giveBacks, new SortGiveBackDateASC());
+    }
+
+    @Override
+    public void sortGiveBackDateDESC(List<GiveBack> giveBacks) {
+        Collections.sort(giveBacks, new SortGiveBackDateDESC());
+    }
+
+    @Override
+    public List<GiveBack> searchGiveBackBySerial(List<GiveBack> giveBacks, String key) {
+        List<GiveBack> resultList = new ArrayList<>();
+        var regex = ".*" + key + ".*";
+        Pattern pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
+        Matcher matcher;
+
+        for (GiveBack giveBack : giveBacks) {
+            if (giveBack.getPhone() != null) {
+                var imeiStr = Long.toString(giveBack.getPhone().getImei());
+                matcher = pattern.matcher(imeiStr);
+                if (matcher.matches()) {
+                    resultList.add(giveBack);
+                }
+            }
+
+            if (giveBack.getPc() != null) {
+                matcher = pattern.matcher(giveBack.getPc().getSerial());
+                if (matcher.matches()) {
+                    resultList.add(giveBack);
+                }
+            }
+
+            if (giveBack.getLaptop() != null) {
+                matcher = pattern.matcher(giveBack.getLaptop().getSerial());
+                if (matcher.matches()) {
+                    resultList.add(giveBack);
+                }
+            }
+
+            if (giveBack.getMonitor() != null) {
+                matcher = pattern.matcher(giveBack.getMonitor().getSerial());
+                if (matcher.matches()) {
+                    resultList.add(giveBack);
+                }
+            }
+        }
+
+        return resultList;
+    }
+
+    @Override
+    public List<GiveBack> searchGiveBackByEmployeeName(List<GiveBack> giveBacks, String key) {
+        List<GiveBack> resultList = new ArrayList<>();
+        var regex = ".*" + key + ".*";
+        Pattern pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
+        Matcher matcher;
+        for (GiveBack giveBack : giveBacks) {
+            matcher = pattern.matcher(giveBack.getEmployee().getFullName());
+            if (matcher.matches()) {
+                resultList.add(giveBack);
+            }
+        }
+        return resultList;
+
+    }
+
+    @Override
+    public List<GiveBack> searchGiveBackByDate(List<GiveBack> giveBacks, String fromDate, String toDate) {
+        List<GiveBack> resultList = new ArrayList<>();
+        var regex = ".*" + fromDate + ".*";
+        Pattern pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
+        Matcher matcher;
+        for (GiveBack giveBack : giveBacks) {
+            try {
+                matcher = pattern.matcher(giveBack.getGiveBackDate().toString());
+                var format = "dd/MM/yyyy";
+                var df = new SimpleDateFormat(format);
+                if (giveBack.getGiveBackDate().after(df.parse(fromDate)) && giveBack.getGiveBackDate().before(df.parse(toDate))) {
+                    resultList.add(giveBack);
+                }
+            } catch (ParseException ex) {
+                Logger.getLogger(DataControllerImp.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         return resultList;

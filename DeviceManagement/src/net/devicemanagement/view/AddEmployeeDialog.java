@@ -435,9 +435,9 @@ public class AddEmployeeDialog extends javax.swing.JDialog implements ActionList
         var employeeId = txtEmployeeId.getText();
         var email = txtEmployeeEmail.getText();
         var dept = comboEmployeeDept.getSelectedItem().toString();
-        if (!pId.isEmpty() && !fullName.isEmpty() && !dob.isEmpty() 
-                && !address.isEmpty() && !phoneNumber.isEmpty() 
-                && !employeeId.isEmpty() && !email.isEmpty() && !dept.isEmpty() ) {
+        if (!pId.isEmpty() && !fullName.isEmpty() && !dob.isEmpty()
+                && !address.isEmpty() && !phoneNumber.isEmpty()
+                && !employeeId.isEmpty() && !email.isEmpty() && !dept.isEmpty()) {
             employee.setId(pId);
             employee.setFullName(fullName);
             employee.setDob(dob);
@@ -446,8 +446,9 @@ public class AddEmployeeDialog extends javax.swing.JDialog implements ActionList
             employee.setEmployeeId(employeeId);
             employee.setEmployeeEmail(email);
             employee.setEmployeeDept(dept);
-            homeFrm.addEmployeeCallback(employee);//đẩy thông tin vào bảng
-//            JOptionPane.showMessageDialog(rootPane, "Thêm nhân viên thành công");
+            if (homeFrm.addEmployeeCallback(employee)) {//đẩy thông tin vào bảng
+                JOptionPane.showMessageDialog(rootPane, "Thêm nhân viên thành công");
+            }
             dispose();
         } else {
             JOptionPane.showMessageDialog(rootPane,

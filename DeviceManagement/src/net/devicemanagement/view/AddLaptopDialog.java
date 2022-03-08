@@ -347,8 +347,9 @@ public class AddLaptopDialog extends javax.swing.JDialog implements ActionListen
             laptop.setVga(vga);
             laptop.setSize(size);
 
-            homeFrm.addLaptopCallback(laptop);//đẩy thông tin vào bảng
-//            JOptionPane.showMessageDialog(rootPane, "Thêm laptop thành công");
+            if (homeFrm.addLaptopCallback(laptop)) {//đẩy thông tin vào bảng
+                JOptionPane.showMessageDialog(rootPane, "Thêm laptop thành công");
+            }
             dispose();
         } else {
             JOptionPane.showMessageDialog(rootPane,

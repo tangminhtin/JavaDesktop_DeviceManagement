@@ -5,7 +5,9 @@
 package net.devicemanagement.controller;
 
 import java.util.List;
+import net.devicemanagement.view.model.Borrowing;
 import net.devicemanagement.view.model.Employee;
+import net.devicemanagement.view.model.GiveBack;
 import net.devicemanagement.view.model.Laptop;
 import net.devicemanagement.view.model.Monitor;
 import net.devicemanagement.view.model.Pc;
@@ -29,6 +31,7 @@ public interface DataController {
     int MONITOR = 4;
     int EMPLOYEE = 5;
     int BORROWING = 6;
+    int GIVE_BACK = 7;
 
     String PHONE_FILE = "PHONE.DAT";
 
@@ -41,6 +44,8 @@ public interface DataController {
     String EMPLOYEE_FILE = "EMPLOYEE.DAT";
     
     String BORROWING_FILE = "BORROWING.DAT";
+    
+    String GIVE_BACK_FILE = "GIVE_BACK.DAT";
 
     <T> void writeToFile(List<T> data, String fileName);
 
@@ -115,5 +120,33 @@ public interface DataController {
     List<Employee> searchEmployeeByName(List<Employee> employees, String key);
     
     List<Employee> searchEmployeeByDept(List<Employee> employees, String key);
+    
+    void sortBorrowingByEmployeeNameASC(List<Borrowing> borrowings);
+    
+    void sortBorrowingByEmployeeNameDESC(List<Borrowing> borrowings);
+    
+    void sortBorrowingDateASC(List<Borrowing> borrowings);
+    
+    void sortBorrowingDateDESC(List<Borrowing> borrowings);
+    
+    List<Borrowing> searchBorrowingBySerial(List<Borrowing> borrowings, String key);
 
+    List<Borrowing> searchBorrowingByEmployeeName(List<Borrowing> borrowings, String key);
+
+    List<Borrowing> searchBorrowingByDate(List<Borrowing> borrowings, String fromDate, String toDate);
+    
+    void sortGiveBackByEmployeeNameASC(List<GiveBack> giveBacks);
+    
+    void sortGiveBackByEmployeeNameDESC(List<GiveBack> giveBacks);
+    
+    void sortGiveBackDateASC(List<GiveBack> giveBacks);
+    
+    void sortGiveBackDateDESC(List<GiveBack> giveBacks);
+    
+    List<GiveBack> searchGiveBackBySerial(List<GiveBack> giveBacks, String key);
+
+    List<GiveBack> searchGiveBackByEmployeeName(List<GiveBack> giveBacks, String key);
+
+    List<GiveBack> searchGiveBackByDate(List<GiveBack> giveBacks, String fromDate, String toDate);
+    
 }

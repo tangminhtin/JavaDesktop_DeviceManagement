@@ -12,7 +12,7 @@ import java.util.Objects;
  * @author Tuan Anh
  */
 public class Monitor implements Serializable {
-
+    private static final long serialVersionUID = -5632464521422362207L;
     private String serial;
     private String name;
     private String size;

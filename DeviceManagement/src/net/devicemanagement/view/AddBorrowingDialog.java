@@ -46,10 +46,10 @@ public class AddBorrowingDialog extends javax.swing.JDialog implements ActionLis
         initComponents();
         setLocationRelativeTo(null);
         addActionListener();
-        phone = new Phone();
-        pc = new Pc();
-        laptop = new Laptop();
-        monitor = new Monitor();
+        phone = null;
+        pc = null;
+        laptop = null;
+        monitor = null;
         homeFrm = (HomeFrm) parent;
     }
 
@@ -501,8 +501,31 @@ public class AddBorrowingDialog extends javax.swing.JDialog implements ActionLis
         JOptionPane.showMessageDialog(rootPane, msg);
     }
 
+//    private void addNewBorrowing() {
+//        if (employee == null || phone == null) {
+//            var msg = "Vui lòng nhập vào mã nhân viên và số IMEI trước!";
+//            showMessage(msg);
+//        } else {
+//            var currentTime = new Date();
+//            var format = "dd/MM/yyyy HH:mm:ss";
+//            var dateFormat = new SimpleDateFormat(format);
+//            txtBorrowingDate.setText(dateFormat.format(currentTime));
+//            var checker = new InfoFilterImp();
+//            Borrowing r = new Borrowing(employee, phone, currentTime);
+//            if (checker.isRecordExist(borrowings, r)) {
+//                var msg = "Nhân viên " + employee.getFullName() + " đã "
+//                        + "mượn điện thoại " + phone.getName() + " trước đó.";
+//                showMessage(msg);
+//            } else {
+//                homeFrm.addBorrowingCallback(r);
+//                var msg = "Mượn điện thoại thành công!";
+//                showMessage(msg);
+////                dispose();
+//            }
+//        }
+//    }
     private void addNewBorrowing() {
-        if (employee == null || phone == null) {
+        if (employee == null) {
             var msg = "Vui lòng nhập vào mã nhân viên và số IMEI trước!";
             showMessage(msg);
         } else {
@@ -511,14 +534,35 @@ public class AddBorrowingDialog extends javax.swing.JDialog implements ActionLis
             var dateFormat = new SimpleDateFormat(format);
             txtBorrowingDate.setText(dateFormat.format(currentTime));
             var checker = new InfoFilterImp();
-            Borrowing r = new Borrowing(employee, phone, currentTime);
+            Borrowing r = new Borrowing(employee, phone, pc, laptop, monitor, currentTime);
+            System.out.println(r);
+
             if (checker.isRecordExist(borrowings, r)) {
-                var msg = "Nhân viên " + employee.getFullName() + " đã "
-                        + "mượn điện thoại " + phone.getName() + " trước đó.";
-                showMessage(msg);
+                if (r.getPhone() != null) {
+                    var msg = "Nhân viên " + r.getEmployee().getFullName() + " đã "
+                            + "mượn điện thoại " + r.getPhone().getName()+ " trước đó.";
+                    showMessage(msg);
+                }
+                
+                if (r.getPc()!= null) {
+                    var msg = "Nhân viên " + r.getEmployee().getFullName() + " đã "
+                            + "mượn điện thoại " + r.getPc().getName()+ " trước đó.";
+                    showMessage(msg);
+                }
+                if (r.getLaptop()!= null) {
+                    var msg = "Nhân viên " + r.getEmployee().getFullName() + " đã "
+                            + "mượn điện thoại " + r.getLaptop().getName() + " trước đó.";
+                    showMessage(msg);
+                }
+                if (r.getMonitor() != null) {
+                    var msg = "Nhân viên " + r.getEmployee().getFullName() + " đã "
+                            + "mượn điện thoại " + r.getMonitor().getName() + " trước đó.";
+                    showMessage(msg);
+                }
+
             } else {
                 homeFrm.addBorrowingCallback(r);
-                var msg = "Mượn điện thoại thành công!";
+                var msg = "Bạn đã mượn sản phẩm thành công!";
                 showMessage(msg);
 //                dispose();
             }
