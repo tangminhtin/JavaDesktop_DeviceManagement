@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Hashtable;
 import java.util.List;
 import javax.print.attribute.Size2DSyntax;
 import javax.swing.DefaultListModel;
@@ -24,6 +25,7 @@ import net.devicemanagement.view.model.Monitor;
 import net.devicemanagement.view.model.Pc;
 import net.devicemanagement.view.model.Phone;
 import net.devicemanagement.view.model.GiveBack;
+import java.util.*;
 
 /**
  *
@@ -2112,7 +2114,11 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         dispose();
     }//GEN-LAST:event_jMenuItem1ActionPerformed
-
+    /**
+     * lam moi du lieu nhan vien
+     *
+     * @param evt
+     */
     private void btnRefreshStaticsticActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshStaticsticActionPerformed
         comboSearchEmployeeStaticstic.setSelectedIndex(0);
 
@@ -2121,18 +2127,49 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
         showEmployees();
         showEmployeeToList();
     }//GEN-LAST:event_btnRefreshStaticsticActionPerformed
-
+    /**
+     * tim nhan vien theo phong ban
+     *
+     * @param evt
+     */
     private void btnSearchEmployee1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSearchEmployee1MousePressed
         String item = String.valueOf(comboSearchEmployeeStaticstic.getSelectedItem()).toString();
-        var result = dataController.searchEmployeeByDept(employees, item);
-        employees.clear();
-        employees.addAll(result);
-        if (employees.size() > 0) {
+        List<Employee> results = dataController.searchEmployeeByDept(employees, item);
+        if (results.size() > 0) {
             DefaultListModel listModel = new DefaultListModel();
-            for (Employee e : employees) {
-                listModel.addElement(e.getFullName());
+            Set<Employee> hash_Set = new HashSet<Employee>();
+
+            // lấy danh sách nhân viên mượn
+            for (Borrowing b : borrowings) {
+                hash_Set.add(b.getEmployee());
             }
+            // lấy danh sách nhân viên trả
+            for (GiveBack g : giveBacks) {
+                hash_Set.add(g.getEmployee());
+            }
+            // chuyển set sang array
+            Object[] arr = hash_Set.toArray();
+            // lưu toàn bộ nhân viên mượn và trả và một list
+            List<Employee> ems = new ArrayList<>();
+            for (int i = 0; i < arr.length; i++) {
+                ems.add((Employee) arr[i]);
+            }
+            // tìm kiếm nhân viên có mượn thiết bị
+            List<Employee> employeeList = new ArrayList<>();
+            for (Employee e1 : ems) {
+                for (Employee e2 : results) {
+                    if (e1.getFullName().equals(e2.getFullName())) {
+                        employeeList.add(e1);   // thêm vào list
+                        listModel.addElement(e1.getFullName());
+                    }
+                }
+            }
+
+            // thêm dữ liệu và list
+            employees.clear();
+            employees.addAll(employeeList);
             jListEmployee.setModel(listModel);
+
             var msg = "Tìm thấy " + employees.size() + " kết quả";
             showDialogMessage(msg);
         } else {
@@ -2145,13 +2182,21 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
     private void jListEmployeeInputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_jListEmployeeInputMethodTextChanged
         // TODO add your handling code here:
     }//GEN-LAST:event_jListEmployeeInputMethodTextChanged
-
+    /**
+     * su kien click trong jList lick vao ten nhan vien -> 2 bang muon va tra se
+     * tu dong update du lieu
+     *
+     * @param evt
+     */
     private void jListEmployeeMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jListEmployeeMousePressed
         if (jListEmployee.getSelectedIndex() != -1) {
             String fullName = jListEmployee.getSelectedValue();
             DefaultTableModel model = (DefaultTableModel) tblBorrowingHistory.getModel();
 
             model.setRowCount(0);
+            /**
+             * Update du lieu trong bang muon
+             */
             for (Borrowing r : borrowings) {
                 Object[] row = new Object[]{};
                 if (r.getEmployee().getFullName().equals(fullName)) {
@@ -2191,7 +2236,9 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
                     model.addRow(row); //thêm các thông số bên trên vào bảng
                 }
             }
-
+            /**
+             * Update du lieu trong bang tra
+             */
             DefaultTableModel tblGiveBackModel = (DefaultTableModel) tblGiveBackHistory.getModel();
             tblGiveBackModel.setRowCount(0);
             for (GiveBack g : giveBacks) {
@@ -3255,14 +3302,31 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
         showEmployees();
         showBorrowings();
         showGiveBacks();
-        showEmployeeToList();
+        showEmployeeToList(); // hien thi danh sach nhan vien vao jlist
     }
 
+    /**
+     * Load du lieu nhan vien len jList check nhan vien trung bang set
+     *
+     */
     private void showEmployeeToList() {
         DefaultListModel listModel = new DefaultListModel();
-        for (Employee e : employees) {
-            listModel.addElement(e.getFullName());
+        Set<String> hash_Set = new HashSet<String>();
+        for (Borrowing b : borrowings) {
+//            listModel.addElement(b.getEmployee().getFullName());
+            hash_Set.add(b.getEmployee().getFullName());
         }
+        for (GiveBack g : giveBacks) {
+
+//            listModel.addElement(g.getEmployee().getFullName());
+            hash_Set.add(g.getEmployee().getFullName());
+        }
+        Object[] arr = hash_Set.toArray();
+        for (int i = 0; i < arr.length; i++) {
+            listModel.addElement(arr[i]);
+
+        }
+
         jListEmployee.setModel(listModel);
         /**
          * set total size for employee and display on Statistic
@@ -3454,6 +3518,7 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
         giveBacks.add(g);
         showGiveBack(g);
         saveData(DataController.GIVE_BACK);//lưu phone
+        txtTotalGiveBack.setText(String.valueOf(giveBacks.size()));
 
     }
 
@@ -3472,6 +3537,7 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
                 borrowings.remove(selectedIndex); //xóa khỏi danh sách
                 tableModelBorrowing.removeRow(selectedIndex); //xóa khỏi bảng
                 dataController.<Borrowing>writeToFile(borrowings, DataController.BORROWING_FILE);
+                txtTotalBorrowing.setText(String.valueOf(borrowings.size()));
             }
         } else {
             var msg = "Vui lòng chọn 1 bản ghi để xóa!";
@@ -4195,6 +4261,7 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
         AddBorrowingDialog addBorrowingDialog
                 = new AddBorrowingDialog(this, true, employees, phones, borrowings, pcs, laptops, monitors);
         addBorrowingDialog.setVisible(true);
+        txtTotalBorrowing.setText(String.valueOf(borrowings.size()));
     }
 
 }
