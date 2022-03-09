@@ -2155,7 +2155,7 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
             for (Borrowing r : borrowings) {
                 Object[] row = new Object[]{};
                 if (r.getEmployee().getFullName().equals(fullName)) {
-                   if (r.getPhone() != null) {
+                    if (r.getPhone() != null) {
                         row = new Object[]{
                             r.getEmployee().getEmployeeId(), r.getEmployee().getFullName(),
                             r.getEmployee().getEmployeeDept(),
@@ -2163,7 +2163,7 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
                             simpleDateFormat.format(r.getBorrowingDate())
                         };
                     }
-                    if (r.getPc()!= null) {
+                    if (r.getPc() != null) {
                         row = new Object[]{
                             r.getEmployee().getEmployeeId(), r.getEmployee().getFullName(),
                             r.getEmployee().getEmployeeDept(),
@@ -2171,7 +2171,7 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
                             simpleDateFormat.format(r.getBorrowingDate())
                         };
                     }
-                    if (r.getLaptop()!= null) {
+                    if (r.getLaptop() != null) {
                         row = new Object[]{
                             r.getEmployee().getEmployeeId(), r.getEmployee().getFullName(),
                             r.getEmployee().getEmployeeDept(),
@@ -2179,7 +2179,7 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
                             simpleDateFormat.format(r.getBorrowingDate())
                         };
                     }
-                    if (r.getMonitor()!= null) {
+                    if (r.getMonitor() != null) {
                         row = new Object[]{
                             r.getEmployee().getEmployeeId(), r.getEmployee().getFullName(),
                             r.getEmployee().getEmployeeDept(),
@@ -2187,7 +2187,7 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
                             simpleDateFormat.format(r.getBorrowingDate())
                         };
                     }
-                    
+
                     model.addRow(row); //thêm các thông số bên trên vào bảng
                 }
             }
@@ -2205,7 +2205,7 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
                             simpleDateFormat.format(g.getGiveBackDate())
                         };
                     }
-                    if (g.getPc()!= null) {
+                    if (g.getPc() != null) {
                         row = new Object[]{
                             g.getEmployee().getEmployeeId(), g.getEmployee().getFullName(),
                             g.getEmployee().getEmployeeDept(),
@@ -2213,7 +2213,7 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
                             simpleDateFormat.format(g.getGiveBackDate())
                         };
                     }
-                    if (g.getLaptop()!= null) {
+                    if (g.getLaptop() != null) {
                         row = new Object[]{
                             g.getEmployee().getEmployeeId(), g.getEmployee().getFullName(),
                             g.getEmployee().getEmployeeDept(),
@@ -2221,7 +2221,7 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
                             simpleDateFormat.format(g.getGiveBackDate())
                         };
                     }
-                    if (g.getMonitor()!= null) {
+                    if (g.getMonitor() != null) {
                         row = new Object[]{
                             g.getEmployee().getEmployeeId(), g.getEmployee().getFullName(),
                             g.getEmployee().getEmployeeDept(),
@@ -3189,6 +3189,7 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
 
     private void showGiveBack(GiveBack g) { //hiển thị thông tin lên bảng
         Object[] row = new Object[]{};
+        // thêm điện thoại vào bảng danh sách trả
         if (g.getPhone() != null) {
             row = new Object[]{
                 g.getEmployee().getEmployeeId(), g.getEmployee().getFullName(),
@@ -3197,6 +3198,7 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
                 simpleDateFormat.format(g.getGiveBackDate())
             };
         }
+        // thêm pc vào bảng danh sách trả
         if (g.getPc() != null) {
             row = new Object[]{
                 g.getEmployee().getEmployeeId(), g.getEmployee().getFullName(),
@@ -3205,6 +3207,7 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
                 simpleDateFormat.format(g.getGiveBackDate())
             };
         }
+        // thêm laptop vào bảng danh sách trả
         if (g.getLaptop() != null) {
             row = new Object[]{
                 g.getEmployee().getEmployeeId(), g.getEmployee().getFullName(),
@@ -3213,6 +3216,7 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
                 simpleDateFormat.format(g.getGiveBackDate())
             };
         }
+        // thêm monitor vào bảng danh sách trả
         if (g.getMonitor() != null) {
             row = new Object[]{
                 g.getEmployee().getEmployeeId(), g.getEmployee().getFullName(),
@@ -3438,11 +3442,12 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
         }
     }
 
+    // thêm vào danh sách trả thiết bị
     private void addNewGiveBack(Borrowing r) {
         var currentTime = new Date();
         var format = "dd/MM/yyyy HH:mm:ss";
         var dateFormat = new SimpleDateFormat(format);
-
+        // thêm mới một record vào danh sách trả
         GiveBack g = new GiveBack(
                 r.getEmployee(), r.getPhone(), r.getPc(), r.getLaptop(), r.getMonitor(), currentTime
         );
@@ -3452,13 +3457,15 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
 
     }
 
+    // xóa mượn (trả thiết bị)
     private void removeBorrowing() {
         int selectedIndex = tblBorrowing.getSelectedRow();//chọn dòng cần xóa
         //chỉ số dòng trong bảng chính là chỉ số dòng trong danh sách
         if (selectedIndex > -1) {
-            var msg = "Bạn có chắc chắn muốn xóa bản ghi này không?";
+            var msg = "Bạn có chắc chắn muốn trả thiết bị này không?";
             int confirm = JOptionPane.showConfirmDialog(rootPane, msg);
             if (confirm == JOptionPane.OK_OPTION) {
+                // thêm vào danh sách trả
                 Borrowing r = borrowings.get(selectedIndex);
                 addNewGiveBack(r);
 
@@ -3896,8 +3903,9 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
         }
     }
 
+    // tìm kiếm thiết bị mượn
     private void searchBorrowings() {
-        if (rbSearchBorrowingBySerial.isSelected()) {
+        if (rbSearchBorrowingBySerial.isSelected()) {   // tìm kiếm theo số serial
             var key = txtSearchBorrowingBySerial.getText();
             if (key.isEmpty()) {
                 var msg = "Vui lòng nhập số IMEI/Serial cần tìm kiếm!";
@@ -3908,7 +3916,7 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
                 borrowings.addAll(result);
                 checkAndShowSearchBorrowings();
             }
-        } else if (rbSearchBorrowingByEmployeeName.isSelected()) {
+        } else if (rbSearchBorrowingByEmployeeName.isSelected()) {  // tìm kiếm theo nhân viên
             var key = txtSearchBorrowingByName.getText();
             if (key.isEmpty()) {
                 var msg = "Vui lòng nhập tên nhân viên cần tìm kiếm!";
@@ -3919,14 +3927,14 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
                 borrowings.addAll(result);
                 checkAndShowSearchBorrowings();
             }
-        } else if (rbSearchBorrowingByDate.isSelected()) {
+        } else if (rbSearchBorrowingByDate.isSelected()) {  // tìm kiếm theo ngày
             var fromDate = txtSearchBorrowingFrom.getText();
             var toDate = txtSearchBorrowingTo.getText();
-            if (fromDate.isEmpty() || toDate.isEmpty()) {
+            if (fromDate.isEmpty() || toDate.isEmpty()) {   // kiểm tra ngày đã nhập hay chưa
                 var msg = "Vui lòng nhập thời gian cần tìm kiếm!";
                 showDialogMessage(msg);
             } else {
-                if (fromDate.equals(toDate)) {
+                if (fromDate.equals(toDate)) {  // kiểm tra khi từ ngày = đến ngày
                     var msg = "Vui lòng nhập từ ngày và đến ngày khác nhau!";
                     showDialogMessage(msg);
                 } else {
@@ -3942,8 +3950,9 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
         }
     }
 
+    // tìm kiếm thiết bị trả
     private void searchGiveBacks() {
-        if (rbSearchGiveBackBySerial.isSelected()) {
+        if (rbSearchGiveBackBySerial.isSelected()) {    // tìm kiếm theo số serial
             var key = txtSearchGiveBackBySerial.getText();
             if (key.isEmpty()) {
                 var msg = "Vui lòng nhập số IMEI/Serial cần tìm kiếm!";
@@ -3954,7 +3963,7 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
                 giveBacks.addAll(result);
                 checkAndShowSearchGiveBacks();
             }
-        } else if (rbSearchGiveBackByEmployeeName.isSelected()) {
+        } else if (rbSearchGiveBackByEmployeeName.isSelected()) {   // tìm kiếm theo nhân viên
             var key = txtSearchGiveBackByEmployeeName.getText();
             if (key.isEmpty()) {
                 var msg = "Vui lòng nhập tên nhân viên cần tìm kiếm!";
@@ -3965,14 +3974,14 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
                 giveBacks.addAll(result);
                 checkAndShowSearchGiveBacks();
             }
-        } else if (rbSearchGiveBackByDate.isSelected()) {
+        } else if (rbSearchGiveBackByDate.isSelected()) {   // tìm kiếm theo ngày
             var fromDate = txtSearchGiveBackFrom.getText();
             var toDate = txtSearchGiveBackTo.getText();
             if (fromDate.isEmpty() || toDate.isEmpty()) {
                 var msg = "Vui lòng nhập thời gian cần tìm kiếm!";
                 showDialogMessage(msg);
             } else {
-                if (fromDate.equals(toDate)) {
+                if (fromDate.equals(toDate)) {  // kiểm tra khi từ ngày = đến ngày
                     var msg = "Vui lòng nhập từ ngày và đến ngày khác nhau!";
                     showDialogMessage(msg);
                 } else {
@@ -4053,6 +4062,7 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
         }
     }
 
+    // kiểm tra và hiển thị thông tin sao khi sau khi tìm kiếm thiết bị mượn
     private void checkAndShowSearchBorrowings() {
         if (borrowings.size() > 0) {
             showBorrowings();
@@ -4066,6 +4076,7 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
         }
     }
 
+    // kiểm tra và hiển thị thông tin sao khi sau khi tìm kiếm thiết bị trả
     private void checkAndShowSearchGiveBacks() {
         if (giveBacks.size() > 0) {
             showGiveBacks();
@@ -4149,6 +4160,7 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
 
     }
 
+    // làm mới dữ liệu trong bảng mượn
     private void refreshBorrowings() {
         var text = "";
         txtSearchBorrowingBySerial.setText(text);
@@ -4157,12 +4169,13 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
         txtSearchBorrowingTo.setText(text);
         buttonGroupSortBorrowing.clearSelection();
         buttonGroupSearchBorrowing.clearSelection();
-
+        // xóa và thêm mới dữ liệu
         borrowings.clear();
         borrowings.addAll(dataController.<Borrowing>readDataFromFile(DataController.BORROWING_FILE));
         showBorrowings();
     }
 
+    // làm mới dữ liệu trong bảng trả
     private void refreshGiveBacks() {
         var text = "";
         txtSearchGiveBackBySerial.setText(text);
@@ -4171,13 +4184,14 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
         txtSearchGiveBackTo.setText(text);
         buttonGroupSortGiveBack.clearSelection();
         buttonGroupSearchGiveBack.clearSelection();
-
+        // xóa và thêm mới dữ liệu
         giveBacks.clear();
         giveBacks.addAll(dataController.<GiveBack>readDataFromFile(DataController.GIVE_BACK_FILE));
         showGiveBacks();
     }
 
     private void addBorrowing() {
+        // hiển thị hộp thoại thêm các thiết bị và nhân viên
         AddBorrowingDialog addBorrowingDialog
                 = new AddBorrowingDialog(this, true, employees, phones, borrowings, pcs, laptops, monitors);
         addBorrowingDialog.setVisible(true);
