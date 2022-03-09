@@ -1561,11 +1561,11 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
 
             },
             new String [] {
-                "Mã nhân viên", "Tên nhân viên", "Phòng ban", "Số IMEI/Serial", "Tên thiết bị", "Thời gian mượn"
+                "Mã nhân viên", "Tên nhân viên", "Phòng ban", "Số IMEI/Serial", "Tên thiết bị", "Loại thiết bị", "Thời gian mượn"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
+                false, false, false, false, false, true, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -1821,11 +1821,11 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
 
             },
             new String [] {
-                "Mã nhân viên", "Tên nhân viên", "Phòng ban", "Số IMEI/Serial", "Tên thiết bị", "Thời gian trả"
+                "Mã nhân viên", "Tên nhân viên", "Phòng ban", "Số IMEI/Serial", "Tên thiết bị", "Loại thiết bị", "Thời gian trả"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
+                false, false, false, false, false, true, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -3203,7 +3203,7 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
             row = new Object[]{
                 r.getEmployee().getEmployeeId(), r.getEmployee().getFullName(),
                 r.getEmployee().getEmployeeDept(),
-                r.getPhone().getImei(), r.getPhone().getName(),
+                r.getPhone().getImei(), r.getPhone().getName(), "Điện thoại",
                 simpleDateFormat.format(r.getBorrowingDate())
             };
         }
@@ -3211,7 +3211,7 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
             row = new Object[]{
                 r.getEmployee().getEmployeeId(), r.getEmployee().getFullName(),
                 r.getEmployee().getEmployeeDept(),
-                r.getPc().getSerial(), r.getPc().getName(),
+                r.getPc().getSerial(), r.getPc().getName(), "PC",
                 simpleDateFormat.format(r.getBorrowingDate())
             };
         }
@@ -3219,7 +3219,7 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
             row = new Object[]{
                 r.getEmployee().getEmployeeId(), r.getEmployee().getFullName(),
                 r.getEmployee().getEmployeeDept(),
-                r.getLaptop().getSerial(), r.getLaptop().getName(),
+                r.getLaptop().getSerial(), r.getLaptop().getName(), "Laptop",
                 simpleDateFormat.format(r.getBorrowingDate())
             };
         }
@@ -3227,7 +3227,7 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
             row = new Object[]{
                 r.getEmployee().getEmployeeId(), r.getEmployee().getFullName(),
                 r.getEmployee().getEmployeeDept(),
-                r.getMonitor().getSerial(), r.getMonitor().getName(),
+                r.getMonitor().getSerial(), r.getMonitor().getName(), "Màn hình",
                 simpleDateFormat.format(r.getBorrowingDate())
             };
         }
@@ -3241,7 +3241,7 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
             row = new Object[]{
                 g.getEmployee().getEmployeeId(), g.getEmployee().getFullName(),
                 g.getEmployee().getEmployeeDept(),
-                g.getPhone().getImei(), g.getPhone().getName(),
+                g.getPhone().getImei(), g.getPhone().getName(), "Điện thoại",
                 simpleDateFormat.format(g.getGiveBackDate())
             };
         }
@@ -3250,7 +3250,7 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
             row = new Object[]{
                 g.getEmployee().getEmployeeId(), g.getEmployee().getFullName(),
                 g.getEmployee().getEmployeeDept(),
-                g.getPc().getSerial(), g.getPc().getName(),
+                g.getPc().getSerial(), g.getPc().getName(), "PC",
                 simpleDateFormat.format(g.getGiveBackDate())
             };
         }
@@ -3259,7 +3259,7 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
             row = new Object[]{
                 g.getEmployee().getEmployeeId(), g.getEmployee().getFullName(),
                 g.getEmployee().getEmployeeDept(),
-                g.getLaptop().getSerial(), g.getLaptop().getName(),
+                g.getLaptop().getSerial(), g.getLaptop().getName(), "Laptop",
                 simpleDateFormat.format(g.getGiveBackDate())
             };
         }
@@ -3268,7 +3268,7 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
             row = new Object[]{
                 g.getEmployee().getEmployeeId(), g.getEmployee().getFullName(),
                 g.getEmployee().getEmployeeDept(),
-                g.getMonitor().getSerial(), g.getMonitor().getName(),
+                g.getMonitor().getSerial(), g.getMonitor().getName(), "Màn hình",
                 simpleDateFormat.format(g.getGiveBackDate())
             };
         }
