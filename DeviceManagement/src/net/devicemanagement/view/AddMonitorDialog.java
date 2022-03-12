@@ -292,8 +292,9 @@ public class AddMonitorDialog extends javax.swing.JDialog implements ActionListe
             monitor.setSize(size);
             monitor.setResolution(resolution);
 
-            homeFrm.addMonitorCallback(monitor);//đẩy thông tin vào bảng
-            JOptionPane.showMessageDialog(rootPane, "Thêm màn hình thành công");
+            if (homeFrm.addMonitorCallback(monitor)) {//đẩy thông tin vào bảng
+                JOptionPane.showMessageDialog(rootPane, "Thêm màn hình thành công");
+            }
             dispose();
         } else {
             JOptionPane.showMessageDialog(rootPane,

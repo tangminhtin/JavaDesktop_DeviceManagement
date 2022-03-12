@@ -12,7 +12,7 @@ import java.util.Objects;
  * @author Tuan Anh
  */
 public class Laptop implements Serializable {
-
+    private static final long serialVersionUID = 4334784551129555854L;
     private String serial;
     private String name;
     private String cpu;

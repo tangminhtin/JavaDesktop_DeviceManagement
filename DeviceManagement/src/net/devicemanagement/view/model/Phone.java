@@ -12,7 +12,7 @@ import java.util.Objects;
  * @author Tuan Anh
  */
 public class Phone implements Serializable{
-    
+    private static final long serialVersionUID = 4602209708090925408L;
     private long imei;
     private String name;
     private String phase;

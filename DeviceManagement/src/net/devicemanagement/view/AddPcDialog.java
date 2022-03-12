@@ -326,8 +326,9 @@ public class AddPcDialog extends javax.swing.JDialog implements ActionListener {
             pc.setDisk(disk);
             pc.setVga(vga);
 
-            homeFrm.addPcCallback(pc);//đẩy thông tin vào bảng
-            JOptionPane.showMessageDialog(rootPane, "Thêm PC thành công");
+            if (homeFrm.addPcCallback(pc)) {//đẩy thông tin vào bảng
+                JOptionPane.showMessageDialog(rootPane, "Thêm PC thành công");
+            }
             dispose();
         } else {
             JOptionPane.showMessageDialog(rootPane,

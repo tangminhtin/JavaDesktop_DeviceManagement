@@ -8,18 +8,24 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Hashtable;
 import java.util.List;
 import javax.print.attribute.Size2DSyntax;
+import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import net.devicemanagement.controller.DataController;
 import net.devicemanagement.controller.DataControllerImp;
+import net.devicemanagement.controller.InfoFilterImp;
 import net.devicemanagement.view.model.Borrowing;
 import net.devicemanagement.view.model.Employee;
 import net.devicemanagement.view.model.Laptop;
 import net.devicemanagement.view.model.Monitor;
 import net.devicemanagement.view.model.Pc;
 import net.devicemanagement.view.model.Phone;
+import net.devicemanagement.view.model.GiveBack;
+import java.util.*;
 
 /**
  *
@@ -39,7 +45,9 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
     private List<Employee> employees; //tạo list các nhân viên
     private DefaultTableModel tableModelEmployee;
     private List<Borrowing> borrowings; //tạo list danh sách mượn
+    private List<GiveBack> giveBacks; //tạo list danh sách trả
     private DefaultTableModel tableModelBorrowing;
+    private DefaultTableModel tableModelGiveBack;
     private SimpleDateFormat simpleDateFormat;
 
     /**
@@ -61,9 +69,10 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
         employees = new ArrayList<>();
         tableModelEmployee = (DefaultTableModel) tblEmployee.getModel();
         tableModelBorrowing = (DefaultTableModel) tblBorrowing.getModel();
+        tableModelGiveBack = (DefaultTableModel) tblGiveBack.getModel();
         //khi ứng dụng được kích hoạt, dữ liệu tự load và hiển thị lên
         dataController = new DataControllerImp();
-        simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");       
+        simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         LoadData();
         ShowData();
     }
@@ -89,6 +98,8 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
         buttonGroupSearchEmployee = new javax.swing.ButtonGroup();
         buttonGroupSortBorrowing = new javax.swing.ButtonGroup();
         buttonGroupSearchBorrowing = new javax.swing.ButtonGroup();
+        buttonGroupSortGiveBack = new javax.swing.ButtonGroup();
+        buttonGroupSearchGiveBack = new javax.swing.ButtonGroup();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
         jPanel7 = new javax.swing.JPanel();
@@ -192,14 +203,14 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
         btnRemoveEmployee = new javax.swing.JButton();
         jPanel6 = new javax.swing.JPanel();
         jPanel17 = new javax.swing.JPanel();
-        rbSortBorrowingNameASC = new javax.swing.JRadioButton();
-        rbSortBorrowingNameDESC = new javax.swing.JRadioButton();
+        rbSortBorrowingEmployeeNameASC = new javax.swing.JRadioButton();
+        rbSortBorrowingEmployeeNameDESC = new javax.swing.JRadioButton();
         rbSortBorrowingDateASC = new javax.swing.JRadioButton();
         rbSortBorrowingDateDESC = new javax.swing.JRadioButton();
         jPanel18 = new javax.swing.JPanel();
-        rbSearchBorrowingById = new javax.swing.JRadioButton();
-        rbSearchBorrowingByName = new javax.swing.JRadioButton();
-        txtSearchBorrowingById = new javax.swing.JTextField();
+        rbSearchBorrowingBySerial = new javax.swing.JRadioButton();
+        rbSearchBorrowingByEmployeeName = new javax.swing.JRadioButton();
+        txtSearchBorrowingBySerial = new javax.swing.JTextField();
         txtSearchBorrowingByName = new javax.swing.JTextField();
         rbSearchBorrowingByDate = new javax.swing.JRadioButton();
         btnSearchBorrowing = new javax.swing.JButton();
@@ -212,6 +223,46 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
         btnRefreshBorrowing = new javax.swing.JButton();
         btnAddBorrowing = new javax.swing.JButton();
         btnRemoveBorrowing = new javax.swing.JButton();
+        jPanel19 = new javax.swing.JPanel();
+        jPanel20 = new javax.swing.JPanel();
+        rbSortGiveBackNameASC = new javax.swing.JRadioButton();
+        rbSortGiveBackNameDESC = new javax.swing.JRadioButton();
+        rbSortGiveBackDateASC = new javax.swing.JRadioButton();
+        rbSortGiveBackDateDESC = new javax.swing.JRadioButton();
+        jPanel21 = new javax.swing.JPanel();
+        rbSearchGiveBackBySerial = new javax.swing.JRadioButton();
+        rbSearchGiveBackByEmployeeName = new javax.swing.JRadioButton();
+        txtSearchGiveBackBySerial = new javax.swing.JTextField();
+        txtSearchGiveBackByEmployeeName = new javax.swing.JTextField();
+        rbSearchGiveBackByDate = new javax.swing.JRadioButton();
+        btnSearchGiveBack = new javax.swing.JButton();
+        txtSearchGiveBackFrom = new javax.swing.JTextField();
+        txtSearchGiveBackTo = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jScrollPane7 = new javax.swing.JScrollPane();
+        tblGiveBack = new javax.swing.JTable();
+        btnRefreshGiveBack = new javax.swing.JButton();
+        jPanel23 = new javax.swing.JPanel();
+        txtTotalBorrowing = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        txtTotalGiveBack = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jScrollPane8 = new javax.swing.JScrollPane();
+        jListEmployee = new javax.swing.JList<>();
+        jLabel8 = new javax.swing.JLabel();
+        txtTotalEm = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        jScrollPane10 = new javax.swing.JScrollPane();
+        tblGiveBackHistory = new javax.swing.JTable();
+        jScrollPane11 = new javax.swing.JScrollPane();
+        tblBorrowingHistory = new javax.swing.JTable();
+        comboSearchEmployeeByDept1 = new javax.swing.JComboBox<>();
+        comboSearchEmployeeStaticstic = new javax.swing.JComboBox<>();
+        btnSearchEmployee1 = new javax.swing.JButton();
+        btnRefreshStaticstic = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -330,7 +381,7 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
                     .addComponent(txtSearchPhoneByImei)
                     .addComponent(txtSearchPhoneByName)
                     .addComponent(comboSearchPhoneByPhase, 0, 256, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 102, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 162, Short.MAX_VALUE)
                 .addComponent(btnSearchPhone, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(32, 32, 32))
         );
@@ -384,6 +435,11 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
 
         btnRemovePhone.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         btnRemovePhone.setText("Xóa điện thoại");
+        btnRemovePhone.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRemovePhoneActionPerformed(evt);
+            }
+        });
 
         btnRefreshPhone.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         btnRefreshPhone.setText("Làm mới");
@@ -532,6 +588,11 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
 
         btnSearchPc.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         btnSearchPc.setText("Tìm");
+        btnSearchPc.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSearchPcActionPerformed(evt);
+            }
+        });
 
         txtSearchPcByRam.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
@@ -547,7 +608,7 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
                     .addComponent(rbSearchPcBySerial))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtSearchPcByName, javax.swing.GroupLayout.DEFAULT_SIZE, 295, Short.MAX_VALUE)
+                    .addComponent(txtSearchPcByName, javax.swing.GroupLayout.DEFAULT_SIZE, 361, Short.MAX_VALUE)
                     .addComponent(txtSearchPcBySerial)
                     .addComponent(txtSearchPcByRam))
                 .addGap(18, 18, 18)
@@ -770,7 +831,7 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
                     .addComponent(rbSearchLaptopBySerial))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtSearchLaptopByName, javax.swing.GroupLayout.DEFAULT_SIZE, 295, Short.MAX_VALUE)
+                    .addComponent(txtSearchLaptopByName, javax.swing.GroupLayout.DEFAULT_SIZE, 361, Short.MAX_VALUE)
                     .addComponent(txtSearchLaptopBySerial)
                     .addComponent(txtSearchLaptopByRam))
                 .addGap(18, 18, 18)
@@ -989,11 +1050,9 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
                     .addComponent(rbSearchMonitorBySerial))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtSearchMonitorByName)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel14Layout.createSequentialGroup()
-                        .addComponent(txtSearchMonitorBySize, javax.swing.GroupLayout.PREFERRED_SIZE, 261, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(txtSearchMonitorBySerial))
+                    .addComponent(txtSearchMonitorByName, javax.swing.GroupLayout.DEFAULT_SIZE, 321, Short.MAX_VALUE)
+                    .addComponent(txtSearchMonitorBySerial)
+                    .addComponent(txtSearchMonitorBySize))
                 .addGap(18, 18, 18)
                 .addComponent(btnSearchMonitor, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(32, 32, 32))
@@ -1209,19 +1268,14 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
                     .addComponent(rbSearchEmployeeByName, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(rbSearchEmployeeByDept)
                     .addComponent(rbSearchEmployeeById))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 85, Short.MAX_VALUE)
                 .addGroup(jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel16Layout.createSequentialGroup()
-                        .addGap(23, 23, 23)
-                        .addComponent(txtSearchEmployeeById, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel16Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
-                        .addGroup(jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(comboSearchEmployeeByDept, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtSearchEmployeeByName, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addComponent(btnSearchEmployee, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(20, 20, 20))))
+                    .addComponent(comboSearchEmployeeByDept, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtSearchEmployeeByName, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtSearchEmployeeById, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(btnSearchEmployee, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(20, 20, 20))
         );
         jPanel16Layout.setVerticalGroup(
             jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1328,19 +1382,19 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
 
         jPanel17.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Sắp xếp danh sách mượn", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 14))); // NOI18N
 
-        rbSortBorrowingNameASC.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        rbSortBorrowingNameASC.setText("Theo tên a-z");
-        rbSortBorrowingNameASC.addActionListener(new java.awt.event.ActionListener() {
+        rbSortBorrowingEmployeeNameASC.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        rbSortBorrowingEmployeeNameASC.setText("Theo tên nhân viên a-z");
+        rbSortBorrowingEmployeeNameASC.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rbSortBorrowingNameASCActionPerformed(evt);
+                rbSortBorrowingEmployeeNameASCActionPerformed(evt);
             }
         });
 
-        rbSortBorrowingNameDESC.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        rbSortBorrowingNameDESC.setText("Theo tên z-a");
+        rbSortBorrowingEmployeeNameDESC.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        rbSortBorrowingEmployeeNameDESC.setText("Theo tên nhân viên z-a");
 
         rbSortBorrowingDateASC.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        rbSortBorrowingDateASC.setText("Theo thời gian sớm - muộn");
+        rbSortBorrowingDateASC.setText("Theo thời gian mượn sớm - muộn");
         rbSortBorrowingDateASC.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 rbSortBorrowingDateASCActionPerformed(evt);
@@ -1348,7 +1402,7 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
         });
 
         rbSortBorrowingDateDESC.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        rbSortBorrowingDateDESC.setText("Theo thời gian muộn - sớm");
+        rbSortBorrowingDateDESC.setText("Theo thời gian mượn muộn - sớm");
         rbSortBorrowingDateDESC.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 rbSortBorrowingDateDESCActionPerformed(evt);
@@ -1362,9 +1416,9 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
             .addGroup(jPanel17Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(rbSortBorrowingNameASC)
-                    .addComponent(rbSortBorrowingNameDESC))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 44, Short.MAX_VALUE)
+                    .addComponent(rbSortBorrowingEmployeeNameASC)
+                    .addComponent(rbSortBorrowingEmployeeNameDESC))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(rbSortBorrowingDateASC)
                     .addComponent(rbSortBorrowingDateDESC))
@@ -1375,37 +1429,37 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
             .addGroup(jPanel17Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(rbSortBorrowingNameASC)
+                    .addComponent(rbSortBorrowingEmployeeNameASC)
                     .addComponent(rbSortBorrowingDateASC))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(rbSortBorrowingNameDESC)
+                    .addComponent(rbSortBorrowingEmployeeNameDESC)
                     .addComponent(rbSortBorrowingDateDESC))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel18.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Tìm kiếm danh sách mượn", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 14))); // NOI18N
 
-        rbSearchBorrowingById.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        rbSearchBorrowingById.setText("Theo IMEI/Serial");
-        rbSearchBorrowingById.addActionListener(new java.awt.event.ActionListener() {
+        rbSearchBorrowingBySerial.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        rbSearchBorrowingBySerial.setText("Theo IMEI/Serial");
+        rbSearchBorrowingBySerial.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rbSearchBorrowingByIdActionPerformed(evt);
+                rbSearchBorrowingBySerialActionPerformed(evt);
             }
         });
 
-        rbSearchBorrowingByName.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        rbSearchBorrowingByName.setText("Theo tên nhân viên");
-        rbSearchBorrowingByName.addActionListener(new java.awt.event.ActionListener() {
+        rbSearchBorrowingByEmployeeName.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        rbSearchBorrowingByEmployeeName.setText("Theo tên nhân viên");
+        rbSearchBorrowingByEmployeeName.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rbSearchBorrowingByNameActionPerformed(evt);
+                rbSearchBorrowingByEmployeeNameActionPerformed(evt);
             }
         });
 
-        txtSearchBorrowingById.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        txtSearchBorrowingById.addActionListener(new java.awt.event.ActionListener() {
+        txtSearchBorrowingBySerial.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtSearchBorrowingBySerial.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtSearchBorrowingByIdActionPerformed(evt);
+                txtSearchBorrowingBySerialActionPerformed(evt);
             }
         });
 
@@ -1423,6 +1477,7 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
         btnSearchBorrowing.setText("Tìm");
 
         txtSearchBorrowingFrom.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtSearchBorrowingFrom.setToolTipText("dd/MM/yyyy");
         txtSearchBorrowingFrom.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtSearchBorrowingFromActionPerformed(evt);
@@ -1430,6 +1485,7 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
         });
 
         txtSearchBorrowingTo.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtSearchBorrowingTo.setToolTipText("dd/MM/yyyy");
         txtSearchBorrowingTo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtSearchBorrowingToActionPerformed(evt);
@@ -1450,12 +1506,12 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
                 .addContainerGap()
                 .addGroup(jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(rbSearchBorrowingByDate)
-                    .addComponent(rbSearchBorrowingByName)
-                    .addComponent(rbSearchBorrowingById))
+                    .addComponent(rbSearchBorrowingByEmployeeName)
+                    .addComponent(rbSearchBorrowingBySerial))
                 .addGap(22, 22, 22)
                 .addGroup(jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel18Layout.createSequentialGroup()
-                        .addComponent(txtSearchBorrowingById, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtSearchBorrowingBySerial, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnSearchBorrowing, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel18Layout.createSequentialGroup()
@@ -1480,12 +1536,12 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
                 .addContainerGap()
                 .addGroup(jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(rbSearchBorrowingById)
-                        .addComponent(txtSearchBorrowingById, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(rbSearchBorrowingBySerial)
+                        .addComponent(txtSearchBorrowingBySerial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(btnSearchBorrowing))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(rbSearchBorrowingByName)
+                    .addComponent(rbSearchBorrowingByEmployeeName)
                     .addComponent(txtSearchBorrowingByName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(6, 6, 6)
                 .addGroup(jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -1497,16 +1553,19 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
                 .addContainerGap(13, Short.MAX_VALUE))
         );
 
+        txtSearchBorrowingFrom.getAccessibleContext().setAccessibleName("");
+        txtSearchBorrowingTo.getAccessibleContext().setAccessibleName("");
+
         tblBorrowing.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Mã nhân viên", "Tên nhân viên", "Phòng ban", "Số IMEI/Serial", "Tên thiết bị", "Thời gian mượn"
+                "Mã nhân viên", "Tên nhân viên", "Phòng ban", "Số IMEI/Serial", "Tên thiết bị", "Loại thiết bị", "Thời gian mượn"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
+                false, false, false, false, false, true, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -1524,7 +1583,7 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
         });
 
         btnAddBorrowing.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        btnAddBorrowing.setText("Thêm mượn");
+        btnAddBorrowing.setText("Cho mượn");
         btnAddBorrowing.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAddBorrowingActionPerformed(evt);
@@ -1532,7 +1591,12 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
         });
 
         btnRemoveBorrowing.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        btnRemoveBorrowing.setText("Xóa mượn");
+        btnRemoveBorrowing.setText("Trả thiết bị");
+        btnRemoveBorrowing.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRemoveBorrowingActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -1575,6 +1639,439 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
 
         jTabbedPane1.addTab("QUẢN LÝ MƯỢN", jPanel6);
 
+        jPanel20.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Sắp xếp danh sách trả", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 14))); // NOI18N
+
+        buttonGroupSortGiveBack.add(rbSortGiveBackNameASC);
+        rbSortGiveBackNameASC.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        rbSortGiveBackNameASC.setText("Theo tên nhân viên a-z");
+        rbSortGiveBackNameASC.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rbSortGiveBackNameASCActionPerformed(evt);
+            }
+        });
+
+        buttonGroupSortGiveBack.add(rbSortGiveBackNameDESC);
+        rbSortGiveBackNameDESC.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        rbSortGiveBackNameDESC.setText("Theo tên nhân viên z-a");
+
+        buttonGroupSortGiveBack.add(rbSortGiveBackDateASC);
+        rbSortGiveBackDateASC.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        rbSortGiveBackDateASC.setText("Theo thời gian trả sớm - muộn");
+        rbSortGiveBackDateASC.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rbSortGiveBackDateASCActionPerformed(evt);
+            }
+        });
+
+        buttonGroupSortGiveBack.add(rbSortGiveBackDateDESC);
+        rbSortGiveBackDateDESC.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        rbSortGiveBackDateDESC.setText("Theo thời gian trả muộn - sớm");
+        rbSortGiveBackDateDESC.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rbSortGiveBackDateDESCActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel20Layout = new javax.swing.GroupLayout(jPanel20);
+        jPanel20.setLayout(jPanel20Layout);
+        jPanel20Layout.setHorizontalGroup(
+            jPanel20Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel20Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel20Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(rbSortGiveBackNameASC)
+                    .addComponent(rbSortGiveBackNameDESC))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel20Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(rbSortGiveBackDateASC)
+                    .addComponent(rbSortGiveBackDateDESC))
+                .addGap(19, 19, 19))
+        );
+        jPanel20Layout.setVerticalGroup(
+            jPanel20Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel20Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel20Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(rbSortGiveBackNameASC)
+                    .addComponent(rbSortGiveBackDateASC))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel20Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(rbSortGiveBackNameDESC)
+                    .addComponent(rbSortGiveBackDateDESC))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        jPanel21.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Tìm kiếm danh sách trả", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 14))); // NOI18N
+
+        buttonGroupSearchGiveBack.add(rbSearchGiveBackBySerial);
+        rbSearchGiveBackBySerial.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        rbSearchGiveBackBySerial.setText("Theo IMEI/Serial");
+        rbSearchGiveBackBySerial.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rbSearchGiveBackBySerialActionPerformed(evt);
+            }
+        });
+
+        buttonGroupSearchGiveBack.add(rbSearchGiveBackByEmployeeName);
+        rbSearchGiveBackByEmployeeName.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        rbSearchGiveBackByEmployeeName.setText("Theo tên nhân viên");
+        rbSearchGiveBackByEmployeeName.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rbSearchGiveBackByEmployeeNameActionPerformed(evt);
+            }
+        });
+
+        txtSearchGiveBackBySerial.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtSearchGiveBackBySerial.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtSearchGiveBackBySerialActionPerformed(evt);
+            }
+        });
+
+        txtSearchGiveBackByEmployeeName.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+
+        buttonGroupSearchGiveBack.add(rbSearchGiveBackByDate);
+        rbSearchGiveBackByDate.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        rbSearchGiveBackByDate.setText("Theo thời gian");
+        rbSearchGiveBackByDate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rbSearchGiveBackByDateActionPerformed(evt);
+            }
+        });
+
+        btnSearchGiveBack.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        btnSearchGiveBack.setText("Tìm");
+
+        txtSearchGiveBackFrom.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtSearchGiveBackFrom.setToolTipText("dd/MM/yyyy");
+        txtSearchGiveBackFrom.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtSearchGiveBackFromActionPerformed(evt);
+            }
+        });
+
+        txtSearchGiveBackTo.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtSearchGiveBackTo.setToolTipText("dd/MM/yyyy");
+        txtSearchGiveBackTo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtSearchGiveBackToActionPerformed(evt);
+            }
+        });
+
+        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel3.setText("Từ ngày");
+
+        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel4.setText("Đến ngày");
+
+        javax.swing.GroupLayout jPanel21Layout = new javax.swing.GroupLayout(jPanel21);
+        jPanel21.setLayout(jPanel21Layout);
+        jPanel21Layout.setHorizontalGroup(
+            jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel21Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(rbSearchGiveBackByDate)
+                    .addComponent(rbSearchGiveBackByEmployeeName)
+                    .addComponent(rbSearchGiveBackBySerial))
+                .addGap(22, 42, Short.MAX_VALUE)
+                .addGroup(jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel21Layout.createSequentialGroup()
+                        .addComponent(txtSearchGiveBackBySerial, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnSearchGiveBack, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel21Layout.createSequentialGroup()
+                        .addComponent(txtSearchGiveBackByEmployeeName, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(115, 115, 115))
+                    .addGroup(jPanel21Layout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addGap(18, 18, 18)
+                        .addComponent(txtSearchGiveBackFrom, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel4)
+                        .addGap(18, 18, 18)
+                        .addComponent(txtSearchGiveBackTo, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(29, 29, 29))
+        );
+        jPanel21Layout.setVerticalGroup(
+            jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel21Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(rbSearchGiveBackBySerial)
+                    .addGroup(jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnSearchGiveBack)
+                        .addComponent(txtSearchGiveBackBySerial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(rbSearchGiveBackByEmployeeName)
+                    .addComponent(txtSearchGiveBackByEmployeeName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(6, 6, 6)
+                .addGroup(jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(rbSearchGiveBackByDate)
+                    .addComponent(txtSearchGiveBackFrom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtSearchGiveBackTo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel4))
+                .addContainerGap(13, Short.MAX_VALUE))
+        );
+
+        tblGiveBack.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Mã nhân viên", "Tên nhân viên", "Phòng ban", "Số IMEI/Serial", "Tên thiết bị", "Loại thiết bị", "Thời gian trả"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, true, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane7.setViewportView(tblGiveBack);
+
+        btnRefreshGiveBack.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        btnRefreshGiveBack.setText("Làm mới");
+        btnRefreshGiveBack.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRefreshGiveBackActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel19Layout = new javax.swing.GroupLayout(jPanel19);
+        jPanel19.setLayout(jPanel19Layout);
+        jPanel19Layout.setHorizontalGroup(
+            jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel19Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane7)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel19Layout.createSequentialGroup()
+                        .addComponent(jPanel20, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jPanel21, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel19Layout.createSequentialGroup()
+                        .addGap(64, 64, 64)
+                        .addComponent(btnRefreshGiveBack, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        jPanel19Layout.setVerticalGroup(
+            jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel19Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanel20, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel21, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 308, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
+                .addComponent(btnRefreshGiveBack)
+                .addContainerGap(23, Short.MAX_VALUE))
+        );
+
+        jPanel20.getAccessibleContext().setAccessibleDescription("");
+
+        jTabbedPane1.addTab("QUẢN LÝ TRẢ", jPanel19);
+        jPanel19.getAccessibleContext().setAccessibleName("Sắp xếp danh sách trả");
+
+        txtTotalBorrowing.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtTotalBorrowing.setText("0");
+
+        jLabel5.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel5.setText("Danh sách nhân viên (click vào để xem lịch sử chi tiết):");
+
+        jLabel6.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel6.setText("Số lượng nhân viên đã trả:");
+
+        txtTotalGiveBack.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtTotalGiveBack.setText("0");
+
+        jLabel7.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel7.setText("Số lượng nhân viên đang mượn:");
+
+        jListEmployee.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jListEmployeeMouseClicked(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jListEmployeeMouseExited(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jListEmployeeMousePressed(evt);
+            }
+        });
+        jListEmployee.addInputMethodListener(new java.awt.event.InputMethodListener() {
+            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
+            }
+            public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
+                jListEmployeeInputMethodTextChanged(evt);
+            }
+        });
+        jScrollPane8.setViewportView(jListEmployee);
+
+        jLabel8.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel8.setText("Lịch sử trả");
+
+        txtTotalEm.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtTotalEm.setText("0");
+
+        jLabel9.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel9.setText("Số lượng nhân viên");
+
+        jLabel10.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel10.setText("Lịch sử mượn");
+
+        tblGiveBackHistory.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Mã nhân viên", "Tên nhân viên", "Phòng ban", "Số IMEI/Serial", "Tên thiết bị", "Thời gian mượn"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane10.setViewportView(tblGiveBackHistory);
+
+        tblBorrowingHistory.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Mã nhân viên", "Tên nhân viên", "Phòng ban", "Số IMEI/Serial", "Tên thiết bị", "Thời gian mượn"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane11.setViewportView(tblBorrowingHistory);
+
+        comboSearchEmployeeByDept1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        comboSearchEmployeeByDept1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Hành chính", "Nhân sự", "Kế toán", "Quản lý dự án", "Phát triển sản phẩm", "Kiểm thử" }));
+
+        comboSearchEmployeeStaticstic.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        comboSearchEmployeeStaticstic.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Hành chính", "Nhân sự", "Kế toán", "Quản lý dự án", "Phát triển sản phẩm", "Kiểm thử" }));
+
+        btnSearchEmployee1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        btnSearchEmployee1.setText("Tìm");
+        btnSearchEmployee1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                btnSearchEmployee1MousePressed(evt);
+            }
+        });
+
+        btnRefreshStaticstic.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        btnRefreshStaticstic.setText("Làm mới");
+        btnRefreshStaticstic.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRefreshStaticsticActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel23Layout = new javax.swing.GroupLayout(jPanel23);
+        jPanel23.setLayout(jPanel23Layout);
+        jPanel23Layout.setHorizontalGroup(
+            jPanel23Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel23Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel23Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel23Layout.createSequentialGroup()
+                        .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 294, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel23Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane10)
+                            .addComponent(jScrollPane11, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel23Layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(jPanel23Layout.createSequentialGroup()
+                        .addGroup(jPanel23Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel23Layout.createSequentialGroup()
+                                .addComponent(jLabel7)
+                                .addGap(18, 18, 18)
+                                .addComponent(txtTotalBorrowing, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel6)
+                                .addGap(18, 18, 18)
+                                .addComponent(txtTotalGiveBack, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel9)
+                                .addGap(18, 18, 18)
+                                .addComponent(txtTotalEm, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel23Layout.createSequentialGroup()
+                                .addComponent(jLabel5)
+                                .addGap(18, 18, 18)
+                                .addComponent(comboSearchEmployeeStaticstic, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(btnSearchEmployee1, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnRefreshStaticstic)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 210, Short.MAX_VALUE)
+                        .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
+            .addGroup(jPanel23Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel23Layout.createSequentialGroup()
+                    .addGap(383, 383, 383)
+                    .addComponent(comboSearchEmployeeByDept1, 0, 294, Short.MAX_VALUE)
+                    .addGap(383, 383, 383)))
+        );
+        jPanel23Layout.setVerticalGroup(
+            jPanel23Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel23Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel23Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtTotalBorrowing, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtTotalGiveBack, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtTotalEm, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel23Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel23Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel23Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(comboSearchEmployeeStaticstic, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnSearchEmployee1)
+                            .addComponent(btnRefreshStaticstic)))
+                    .addGroup(jPanel23Layout.createSequentialGroup()
+                        .addGap(21, 21, 21)
+                        .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel23Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel23Layout.createSequentialGroup()
+                        .addComponent(jScrollPane11, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(6, 6, 6)
+                        .addComponent(jScrollPane10, javax.swing.GroupLayout.DEFAULT_SIZE, 181, Short.MAX_VALUE))
+                    .addComponent(jScrollPane8))
+                .addContainerGap())
+            .addGroup(jPanel23Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel23Layout.createSequentialGroup()
+                    .addGap(273, 273, 273)
+                    .addComponent(comboSearchEmployeeByDept1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(247, Short.MAX_VALUE)))
+        );
+
+        jTabbedPane1.addTab("THỐNG KÊ NHÂN VIÊN", jPanel23);
+
         jMenu1.setText("File");
 
         jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.ALT_DOWN_MASK));
@@ -1613,206 +2110,265 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void btnAddPhoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddPhoneActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnAddPhoneActionPerformed
-
-    private void btnRefreshPhoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshPhoneActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnRefreshPhoneActionPerformed
-
-    private void rbSortPhoneNameASCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSortPhoneNameASCActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_rbSortPhoneNameASCActionPerformed
-
-    private void rbSortPhonePhaseDESCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSortPhonePhaseDESCActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_rbSortPhonePhaseDESCActionPerformed
-
-    private void rbSortPhonePhaseASCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSortPhonePhaseASCActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_rbSortPhonePhaseASCActionPerformed
-
-    private void rbSearchPhoneByNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSearchPhoneByNameActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_rbSearchPhoneByNameActionPerformed
-
-    private void txtSearchPhoneByImeiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchPhoneByImeiActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtSearchPhoneByImeiActionPerformed
-
-    private void rbSearchPhoneByPhaseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSearchPhoneByPhaseActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_rbSearchPhoneByPhaseActionPerformed
 //Menu item thoát ứng dụng
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         dispose();
     }//GEN-LAST:event_jMenuItem1ActionPerformed
+    /**
+     * lam moi du lieu nhan vien
+     *
+     * @param evt
+     */
+    private void btnRefreshStaticsticActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshStaticsticActionPerformed
+        comboSearchEmployeeStaticstic.setSelectedIndex(0);
 
-    private void rbSortChipPcASCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSortChipPcASCActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_rbSortChipPcASCActionPerformed
+        employees.clear();
+        employees.addAll(dataController.<Employee>readDataFromFile(DataController.EMPLOYEE_FILE));
+        showEmployees();
+        showEmployeeToList();
+    }//GEN-LAST:event_btnRefreshStaticsticActionPerformed
+    /**
+     * tim nhan vien theo phong ban
+     *
+     * @param evt
+     */
+    private void btnSearchEmployee1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSearchEmployee1MousePressed
+        String item = String.valueOf(comboSearchEmployeeStaticstic.getSelectedItem()).toString();
+        List<Employee> results = dataController.searchEmployeeByDept(employees, item);
+        if (results.size() > 0) {
+            DefaultListModel listModel = new DefaultListModel();
+            Set<Employee> hash_Set = new HashSet<Employee>();
 
-    private void rbSortRamPcASCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSortRamPcASCActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_rbSortRamPcASCActionPerformed
+            // lấy danh sách nhân viên mượn
+            for (Borrowing b : borrowings) {
+                hash_Set.add(b.getEmployee());
+            }
+            // lấy danh sách nhân viên trả
+            for (GiveBack g : giveBacks) {
+                hash_Set.add(g.getEmployee());
+            }
+            // chuyển set sang array
+            Object[] arr = hash_Set.toArray();
+            // lưu toàn bộ nhân viên mượn và trả và một list
+            List<Employee> ems = new ArrayList<>();
+            for (int i = 0; i < arr.length; i++) {
+                ems.add((Employee) arr[i]);
+            }
+            // tìm kiếm nhân viên có mượn thiết bị
+            List<Employee> employeeList = new ArrayList<>();
+            for (Employee e1 : ems) {
+                for (Employee e2 : results) {
+                    if (e1.getFullName().equals(e2.getFullName())) {
+                        employeeList.add(e1);   // thêm vào list
+                        listModel.addElement(e1.getFullName());
+                    }
+                }
+            }
 
-    private void rbSortRamPcDESCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSortRamPcDESCActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_rbSortRamPcDESCActionPerformed
+            // thêm dữ liệu và list
+            employees.clear();
+            employees.addAll(employeeList);
+            jListEmployee.setModel(listModel);
 
-    private void rbSearchPcByNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSearchPcByNameActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_rbSearchPcByNameActionPerformed
+            var msg = "Tìm thấy " + employees.size() + " kết quả";
+            showDialogMessage(msg);
+        } else {
+            var msg = "Không tìm thấy kết quả nào";
+            showDialogMessage(msg);
 
-    private void txtSearchPcBySerialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchPcBySerialActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtSearchPcBySerialActionPerformed
+        }
+    }//GEN-LAST:event_btnSearchEmployee1MousePressed
 
-    private void rbSearchPcByRamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSearchPcByRamActionPerformed
+    private void jListEmployeeInputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_jListEmployeeInputMethodTextChanged
         // TODO add your handling code here:
-    }//GEN-LAST:event_rbSearchPcByRamActionPerformed
+    }//GEN-LAST:event_jListEmployeeInputMethodTextChanged
+    /**
+     * su kien click trong jList lick vao ten nhan vien -> 2 bang muon va tra se
+     * tu dong update du lieu
+     *
+     * @param evt
+     */
+    private void jListEmployeeMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jListEmployeeMousePressed
+        if (jListEmployee.getSelectedIndex() != -1) {
+            String fullName = jListEmployee.getSelectedValue();
+            DefaultTableModel model = (DefaultTableModel) tblBorrowingHistory.getModel();
 
-    private void btnRefreshPcActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshPcActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnRefreshPcActionPerformed
+            model.setRowCount(0);
+            /**
+             * Update du lieu trong bang muon
+             */
+            for (Borrowing r : borrowings) {
+                Object[] row = new Object[]{};
+                if (r.getEmployee().getFullName().equals(fullName)) {
+                    if (r.getPhone() != null) {
+                        row = new Object[]{
+                            r.getEmployee().getEmployeeId(), r.getEmployee().getFullName(),
+                            r.getEmployee().getEmployeeDept(),
+                            r.getPhone().getImei(), r.getPhone().getName(),
+                            simpleDateFormat.format(r.getBorrowingDate())
+                        };
+                    }
+                    if (r.getPc() != null) {
+                        row = new Object[]{
+                            r.getEmployee().getEmployeeId(), r.getEmployee().getFullName(),
+                            r.getEmployee().getEmployeeDept(),
+                            r.getPc().getSerial(), r.getPc().getName(),
+                            simpleDateFormat.format(r.getBorrowingDate())
+                        };
+                    }
+                    if (r.getLaptop() != null) {
+                        row = new Object[]{
+                            r.getEmployee().getEmployeeId(), r.getEmployee().getFullName(),
+                            r.getEmployee().getEmployeeDept(),
+                            r.getLaptop().getSerial(), r.getLaptop().getName(),
+                            simpleDateFormat.format(r.getBorrowingDate())
+                        };
+                    }
+                    if (r.getMonitor() != null) {
+                        row = new Object[]{
+                            r.getEmployee().getEmployeeId(), r.getEmployee().getFullName(),
+                            r.getEmployee().getEmployeeDept(),
+                            r.getMonitor().getSerial(), r.getMonitor().getName(),
+                            simpleDateFormat.format(r.getBorrowingDate())
+                        };
+                    }
 
-    private void btnAddPcActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddPcActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnAddPcActionPerformed
+                    model.addRow(row); //thêm các thông số bên trên vào bảng
+                }
+            }
+            /**
+             * Update du lieu trong bang tra
+             */
+            DefaultTableModel tblGiveBackModel = (DefaultTableModel) tblGiveBackHistory.getModel();
+            tblGiveBackModel.setRowCount(0);
+            for (GiveBack g : giveBacks) {
+                Object[] row = new Object[]{};
+                if (g.getEmployee().getFullName().equals(fullName)) {
+                    if (g.getPhone() != null) {
+                        row = new Object[]{
+                            g.getEmployee().getEmployeeId(), g.getEmployee().getFullName(),
+                            g.getEmployee().getEmployeeDept(),
+                            g.getPhone().getImei(), g.getPhone().getName(),
+                            simpleDateFormat.format(g.getGiveBackDate())
+                        };
+                    }
+                    if (g.getPc() != null) {
+                        row = new Object[]{
+                            g.getEmployee().getEmployeeId(), g.getEmployee().getFullName(),
+                            g.getEmployee().getEmployeeDept(),
+                            g.getPc().getSerial(), g.getPc().getName(),
+                            simpleDateFormat.format(g.getGiveBackDate())
+                        };
+                    }
+                    if (g.getLaptop() != null) {
+                        row = new Object[]{
+                            g.getEmployee().getEmployeeId(), g.getEmployee().getFullName(),
+                            g.getEmployee().getEmployeeDept(),
+                            g.getLaptop().getSerial(), g.getLaptop().getName(),
+                            simpleDateFormat.format(g.getGiveBackDate())
+                        };
+                    }
+                    if (g.getMonitor() != null) {
+                        row = new Object[]{
+                            g.getEmployee().getEmployeeId(), g.getEmployee().getFullName(),
+                            g.getEmployee().getEmployeeDept(),
+                            g.getMonitor().getSerial(), g.getMonitor().getName(),
+                            simpleDateFormat.format(g.getGiveBackDate())
+                        };
+                    }
 
-    private void rbSortChipPcDESCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSortChipPcDESCActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_rbSortChipPcDESCActionPerformed
+                    tblGiveBackModel.addRow(row); //thêm các thông số bên trên vào bảng
+                }
+            }
+        }
+    }//GEN-LAST:event_jListEmployeeMousePressed
 
-    private void rbSortChipLaptopASCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSortChipLaptopASCActionPerformed
+    private void jListEmployeeMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jListEmployeeMouseExited
         // TODO add your handling code here:
-    }//GEN-LAST:event_rbSortChipLaptopASCActionPerformed
+    }//GEN-LAST:event_jListEmployeeMouseExited
 
-    private void rbSortChipLaptopDESCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSortChipLaptopDESCActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_rbSortChipLaptopDESCActionPerformed
+    private void jListEmployeeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jListEmployeeMouseClicked
+        ////        jListEmployee
+        //        if(jListEmployee.getSelectedIndex() != -1){
+        //            System.out.println(jListEmployee.getSelectedValue());
+        //        }
+    }//GEN-LAST:event_jListEmployeeMouseClicked
 
-    private void rbSortRamLaptopASCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSortRamLaptopASCActionPerformed
+    private void btnRefreshGiveBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshGiveBackActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_rbSortRamLaptopASCActionPerformed
+    }//GEN-LAST:event_btnRefreshGiveBackActionPerformed
 
-    private void rbSortRamLaptopDESCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSortRamLaptopDESCActionPerformed
+    private void txtSearchGiveBackToActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchGiveBackToActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_rbSortRamLaptopDESCActionPerformed
+    }//GEN-LAST:event_txtSearchGiveBackToActionPerformed
 
-    private void rbSearchLaptopByNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSearchLaptopByNameActionPerformed
+    private void txtSearchGiveBackFromActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchGiveBackFromActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_rbSearchLaptopByNameActionPerformed
+    }//GEN-LAST:event_txtSearchGiveBackFromActionPerformed
 
-    private void txtSearchLaptopBySerialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchLaptopBySerialActionPerformed
+    private void rbSearchGiveBackByDateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSearchGiveBackByDateActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtSearchLaptopBySerialActionPerformed
+    }//GEN-LAST:event_rbSearchGiveBackByDateActionPerformed
 
-    private void rbSearchLaptopByRamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSearchLaptopByRamActionPerformed
+    private void txtSearchGiveBackBySerialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchGiveBackBySerialActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_rbSearchLaptopByRamActionPerformed
+    }//GEN-LAST:event_txtSearchGiveBackBySerialActionPerformed
 
-    private void btnRefreshLaptopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshLaptopActionPerformed
+    private void rbSearchGiveBackByEmployeeNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSearchGiveBackByEmployeeNameActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnRefreshLaptopActionPerformed
+    }//GEN-LAST:event_rbSearchGiveBackByEmployeeNameActionPerformed
 
-    private void btnAddLaptopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddLaptopActionPerformed
+    private void rbSearchGiveBackBySerialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSearchGiveBackBySerialActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnAddLaptopActionPerformed
+    }//GEN-LAST:event_rbSearchGiveBackBySerialActionPerformed
 
-    private void rbSortNameMonitorASCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSortNameMonitorASCActionPerformed
+    private void rbSortGiveBackDateDESCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSortGiveBackDateDESCActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_rbSortNameMonitorASCActionPerformed
+    }//GEN-LAST:event_rbSortGiveBackDateDESCActionPerformed
 
-    private void rbSortNameMonitorDESCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSortNameMonitorDESCActionPerformed
+    private void rbSortGiveBackDateASCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSortGiveBackDateASCActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_rbSortNameMonitorDESCActionPerformed
+    }//GEN-LAST:event_rbSortGiveBackDateASCActionPerformed
 
-    private void rbSortSizeMonitorASCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSortSizeMonitorASCActionPerformed
+    private void rbSortGiveBackNameASCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSortGiveBackNameASCActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_rbSortSizeMonitorASCActionPerformed
+    }//GEN-LAST:event_rbSortGiveBackNameASCActionPerformed
 
-    private void rbSortSizeMonitorDESCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSortSizeMonitorDESCActionPerformed
+    private void btnRemoveBorrowingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveBorrowingActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_rbSortSizeMonitorDESCActionPerformed
+    }//GEN-LAST:event_btnRemoveBorrowingActionPerformed
 
-    private void rbSearchMonitorByNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSearchMonitorByNameActionPerformed
+    private void btnAddBorrowingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddBorrowingActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_rbSearchMonitorByNameActionPerformed
-
-    private void txtSearchMonitorBySerialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchMonitorBySerialActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtSearchMonitorBySerialActionPerformed
-
-    private void rbSearchMonitorBySizeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSearchMonitorBySizeActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_rbSearchMonitorBySizeActionPerformed
-
-    private void btnRefreshMonitorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshMonitorActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnRefreshMonitorActionPerformed
-
-    private void btnAddMonitorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddMonitorActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnAddMonitorActionPerformed
-
-    private void btnEditMonitorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditMonitorActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnEditMonitorActionPerformed
-
-    private void rbSortEmployeeNameASCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSortEmployeeNameASCActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_rbSortEmployeeNameASCActionPerformed
-
-    private void rbSortEmployeeIdASCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSortEmployeeIdASCActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_rbSortEmployeeIdASCActionPerformed
-
-    private void rbSortEmployeeIdDESCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSortEmployeeIdDESCActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_rbSortEmployeeIdDESCActionPerformed
-
-    private void rbSearchEmployeeByNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSearchEmployeeByNameActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_rbSearchEmployeeByNameActionPerformed
-
-    private void txtSearchEmployeeByIdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchEmployeeByIdActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtSearchEmployeeByIdActionPerformed
-
-    private void rbSearchEmployeeByDeptActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSearchEmployeeByDeptActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_rbSearchEmployeeByDeptActionPerformed
-
-    private void btnRefreshEmployeeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshEmployeeActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnRefreshEmployeeActionPerformed
-
-    private void btnAddEmployeeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddEmployeeActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnAddEmployeeActionPerformed
-
-    private void rbSearchBorrowingByNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSearchBorrowingByNameActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_rbSearchBorrowingByNameActionPerformed
-
-    private void txtSearchBorrowingByIdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchBorrowingByIdActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtSearchBorrowingByIdActionPerformed
-
-    private void rbSearchBorrowingByDateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSearchBorrowingByDateActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_rbSearchBorrowingByDateActionPerformed
+    }//GEN-LAST:event_btnAddBorrowingActionPerformed
 
     private void btnRefreshBorrowingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshBorrowingActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnRefreshBorrowingActionPerformed
 
-    private void btnAddBorrowingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddBorrowingActionPerformed
+    private void txtSearchBorrowingToActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchBorrowingToActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnAddBorrowingActionPerformed
+    }//GEN-LAST:event_txtSearchBorrowingToActionPerformed
+
+    private void txtSearchBorrowingFromActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchBorrowingFromActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtSearchBorrowingFromActionPerformed
+
+    private void rbSearchBorrowingByDateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSearchBorrowingByDateActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rbSearchBorrowingByDateActionPerformed
+
+    private void txtSearchBorrowingBySerialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchBorrowingBySerialActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtSearchBorrowingBySerialActionPerformed
+
+    private void rbSearchBorrowingByEmployeeNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSearchBorrowingByEmployeeNameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rbSearchBorrowingByEmployeeNameActionPerformed
+
+    private void rbSearchBorrowingBySerialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSearchBorrowingBySerialActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rbSearchBorrowingBySerialActionPerformed
 
     private void rbSortBorrowingDateDESCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSortBorrowingDateDESCActionPerformed
         // TODO add your handling code here:
@@ -1822,21 +2378,193 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
         // TODO add your handling code here:
     }//GEN-LAST:event_rbSortBorrowingDateASCActionPerformed
 
-    private void rbSortBorrowingNameASCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSortBorrowingNameASCActionPerformed
+    private void rbSortBorrowingEmployeeNameASCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSortBorrowingEmployeeNameASCActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_rbSortBorrowingNameASCActionPerformed
+    }//GEN-LAST:event_rbSortBorrowingEmployeeNameASCActionPerformed
 
-    private void rbSearchBorrowingByIdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSearchBorrowingByIdActionPerformed
+    private void btnAddEmployeeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddEmployeeActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_rbSearchBorrowingByIdActionPerformed
+    }//GEN-LAST:event_btnAddEmployeeActionPerformed
 
-    private void txtSearchBorrowingFromActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchBorrowingFromActionPerformed
+    private void btnRefreshEmployeeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshEmployeeActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtSearchBorrowingFromActionPerformed
+    }//GEN-LAST:event_btnRefreshEmployeeActionPerformed
 
-    private void txtSearchBorrowingToActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchBorrowingToActionPerformed
+    private void rbSearchEmployeeByDeptActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSearchEmployeeByDeptActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtSearchBorrowingToActionPerformed
+    }//GEN-LAST:event_rbSearchEmployeeByDeptActionPerformed
+
+    private void txtSearchEmployeeByIdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchEmployeeByIdActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtSearchEmployeeByIdActionPerformed
+
+    private void rbSearchEmployeeByNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSearchEmployeeByNameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rbSearchEmployeeByNameActionPerformed
+
+    private void rbSortEmployeeIdDESCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSortEmployeeIdDESCActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rbSortEmployeeIdDESCActionPerformed
+
+    private void rbSortEmployeeIdASCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSortEmployeeIdASCActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rbSortEmployeeIdASCActionPerformed
+
+    private void rbSortEmployeeNameASCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSortEmployeeNameASCActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rbSortEmployeeNameASCActionPerformed
+
+    private void btnEditMonitorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditMonitorActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnEditMonitorActionPerformed
+
+    private void btnAddMonitorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddMonitorActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnAddMonitorActionPerformed
+
+    private void btnRefreshMonitorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshMonitorActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnRefreshMonitorActionPerformed
+
+    private void rbSearchMonitorBySizeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSearchMonitorBySizeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rbSearchMonitorBySizeActionPerformed
+
+    private void txtSearchMonitorBySerialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchMonitorBySerialActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtSearchMonitorBySerialActionPerformed
+
+    private void rbSearchMonitorByNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSearchMonitorByNameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rbSearchMonitorByNameActionPerformed
+
+    private void rbSortSizeMonitorDESCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSortSizeMonitorDESCActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rbSortSizeMonitorDESCActionPerformed
+
+    private void rbSortSizeMonitorASCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSortSizeMonitorASCActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rbSortSizeMonitorASCActionPerformed
+
+    private void rbSortNameMonitorDESCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSortNameMonitorDESCActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rbSortNameMonitorDESCActionPerformed
+
+    private void rbSortNameMonitorASCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSortNameMonitorASCActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rbSortNameMonitorASCActionPerformed
+
+    private void btnAddLaptopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddLaptopActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnAddLaptopActionPerformed
+
+    private void btnRefreshLaptopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshLaptopActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnRefreshLaptopActionPerformed
+
+    private void rbSearchLaptopByRamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSearchLaptopByRamActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rbSearchLaptopByRamActionPerformed
+
+    private void txtSearchLaptopBySerialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchLaptopBySerialActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtSearchLaptopBySerialActionPerformed
+
+    private void rbSearchLaptopByNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSearchLaptopByNameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rbSearchLaptopByNameActionPerformed
+
+    private void rbSortRamLaptopDESCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSortRamLaptopDESCActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rbSortRamLaptopDESCActionPerformed
+
+    private void rbSortRamLaptopASCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSortRamLaptopASCActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rbSortRamLaptopASCActionPerformed
+
+    private void rbSortChipLaptopDESCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSortChipLaptopDESCActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rbSortChipLaptopDESCActionPerformed
+
+    private void rbSortChipLaptopASCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSortChipLaptopASCActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rbSortChipLaptopASCActionPerformed
+
+    private void btnAddPcActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddPcActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnAddPcActionPerformed
+
+    private void btnRefreshPcActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshPcActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnRefreshPcActionPerformed
+
+    private void btnSearchPcActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchPcActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnSearchPcActionPerformed
+
+    private void rbSearchPcByRamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSearchPcByRamActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rbSearchPcByRamActionPerformed
+
+    private void txtSearchPcBySerialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchPcBySerialActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtSearchPcBySerialActionPerformed
+
+    private void rbSearchPcByNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSearchPcByNameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rbSearchPcByNameActionPerformed
+
+    private void rbSortRamPcDESCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSortRamPcDESCActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rbSortRamPcDESCActionPerformed
+
+    private void rbSortRamPcASCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSortRamPcASCActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rbSortRamPcASCActionPerformed
+
+    private void rbSortChipPcDESCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSortChipPcDESCActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rbSortChipPcDESCActionPerformed
+
+    private void rbSortChipPcASCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSortChipPcASCActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rbSortChipPcASCActionPerformed
+
+    private void btnRefreshPhoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshPhoneActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnRefreshPhoneActionPerformed
+
+    private void btnRemovePhoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemovePhoneActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnRemovePhoneActionPerformed
+
+    private void btnAddPhoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddPhoneActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnAddPhoneActionPerformed
+
+    private void rbSearchPhoneByPhaseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSearchPhoneByPhaseActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rbSearchPhoneByPhaseActionPerformed
+
+    private void txtSearchPhoneByImeiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchPhoneByImeiActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtSearchPhoneByImeiActionPerformed
+
+    private void rbSearchPhoneByNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSearchPhoneByNameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rbSearchPhoneByNameActionPerformed
+
+    private void rbSortPhonePhaseDESCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSortPhonePhaseDESCActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rbSortPhonePhaseDESCActionPerformed
+
+    private void rbSortPhonePhaseASCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSortPhonePhaseASCActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rbSortPhonePhaseASCActionPerformed
+
+    private void rbSortPhoneNameASCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSortPhoneNameASCActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rbSortPhoneNameASCActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1887,10 +2615,12 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
     private javax.swing.JButton btnEditPhone;
     private javax.swing.JButton btnRefreshBorrowing;
     private javax.swing.JButton btnRefreshEmployee;
+    private javax.swing.JButton btnRefreshGiveBack;
     private javax.swing.JButton btnRefreshLaptop;
     private javax.swing.JButton btnRefreshMonitor;
     private javax.swing.JButton btnRefreshPc;
     private javax.swing.JButton btnRefreshPhone;
+    private javax.swing.JButton btnRefreshStaticstic;
     private javax.swing.JButton btnRemoveBorrowing;
     private javax.swing.JButton btnRemoveEmployee;
     private javax.swing.JButton btnRemoveLaptop;
@@ -1899,26 +2629,41 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
     private javax.swing.JButton btnRemovePhone;
     private javax.swing.JButton btnSearchBorrowing;
     private javax.swing.JButton btnSearchEmployee;
+    private javax.swing.JButton btnSearchEmployee1;
+    private javax.swing.JButton btnSearchGiveBack;
     private javax.swing.JButton btnSearchLaptop;
     private javax.swing.JButton btnSearchMonitor;
     private javax.swing.JButton btnSearchPc;
     private javax.swing.JButton btnSearchPhone;
     private javax.swing.ButtonGroup buttonGroupSearchBorrowing;
     private javax.swing.ButtonGroup buttonGroupSearchEmployee;
+    private javax.swing.ButtonGroup buttonGroupSearchGiveBack;
     private javax.swing.ButtonGroup buttonGroupSearchLaptop;
     private javax.swing.ButtonGroup buttonGroupSearchMonitor;
     private javax.swing.ButtonGroup buttonGroupSearchPc;
     private javax.swing.ButtonGroup buttonGroupSearchPhone;
     private javax.swing.ButtonGroup buttonGroupSortBorrowing;
     private javax.swing.ButtonGroup buttonGroupSortEmployee;
+    private javax.swing.ButtonGroup buttonGroupSortGiveBack;
     private javax.swing.ButtonGroup buttonGroupSortLaptop;
     private javax.swing.ButtonGroup buttonGroupSortMonitor;
     private javax.swing.ButtonGroup buttonGroupSortPc;
     private javax.swing.ButtonGroup buttonGroupSortPhone;
     private javax.swing.JComboBox<String> comboSearchEmployeeByDept;
+    private javax.swing.JComboBox<String> comboSearchEmployeeByDept1;
+    private javax.swing.JComboBox<String> comboSearchEmployeeStaticstic;
     private javax.swing.JComboBox<String> comboSearchPhoneByPhase;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
+    private javax.swing.JList<String> jListEmployee;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
@@ -1933,7 +2678,11 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
     private javax.swing.JPanel jPanel16;
     private javax.swing.JPanel jPanel17;
     private javax.swing.JPanel jPanel18;
+    private javax.swing.JPanel jPanel19;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel20;
+    private javax.swing.JPanel jPanel21;
+    private javax.swing.JPanel jPanel23;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
@@ -1942,18 +2691,25 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane10;
+    private javax.swing.JScrollPane jScrollPane11;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
+    private javax.swing.JScrollPane jScrollPane7;
+    private javax.swing.JScrollPane jScrollPane8;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JRadioButton rbSearchBorrowingByDate;
-    private javax.swing.JRadioButton rbSearchBorrowingById;
-    private javax.swing.JRadioButton rbSearchBorrowingByName;
+    private javax.swing.JRadioButton rbSearchBorrowingByEmployeeName;
+    private javax.swing.JRadioButton rbSearchBorrowingBySerial;
     private javax.swing.JRadioButton rbSearchEmployeeByDept;
     private javax.swing.JRadioButton rbSearchEmployeeById;
     private javax.swing.JRadioButton rbSearchEmployeeByName;
+    private javax.swing.JRadioButton rbSearchGiveBackByDate;
+    private javax.swing.JRadioButton rbSearchGiveBackByEmployeeName;
+    private javax.swing.JRadioButton rbSearchGiveBackBySerial;
     private javax.swing.JRadioButton rbSearchLaptopByName;
     private javax.swing.JRadioButton rbSearchLaptopByRam;
     private javax.swing.JRadioButton rbSearchLaptopBySerial;
@@ -1968,8 +2724,8 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
     private javax.swing.JRadioButton rbSearchPhoneByPhase;
     private javax.swing.JRadioButton rbSortBorrowingDateASC;
     private javax.swing.JRadioButton rbSortBorrowingDateDESC;
-    private javax.swing.JRadioButton rbSortBorrowingNameASC;
-    private javax.swing.JRadioButton rbSortBorrowingNameDESC;
+    private javax.swing.JRadioButton rbSortBorrowingEmployeeNameASC;
+    private javax.swing.JRadioButton rbSortBorrowingEmployeeNameDESC;
     private javax.swing.JRadioButton rbSortChipLaptopASC;
     private javax.swing.JRadioButton rbSortChipLaptopDESC;
     private javax.swing.JRadioButton rbSortChipPcASC;
@@ -1978,6 +2734,10 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
     private javax.swing.JRadioButton rbSortEmployeeIdDESC;
     private javax.swing.JRadioButton rbSortEmployeeNameASC;
     private javax.swing.JRadioButton rbSortEmployeeNameDESC;
+    private javax.swing.JRadioButton rbSortGiveBackDateASC;
+    private javax.swing.JRadioButton rbSortGiveBackDateDESC;
+    private javax.swing.JRadioButton rbSortGiveBackNameASC;
+    private javax.swing.JRadioButton rbSortGiveBackNameDESC;
     private javax.swing.JRadioButton rbSortNameMonitorASC;
     private javax.swing.JRadioButton rbSortNameMonitorDESC;
     private javax.swing.JRadioButton rbSortPhoneNameASC;
@@ -1991,17 +2751,24 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
     private javax.swing.JRadioButton rbSortSizeMonitorASC;
     private javax.swing.JRadioButton rbSortSizeMonitorDESC;
     private javax.swing.JTable tblBorrowing;
+    private javax.swing.JTable tblBorrowingHistory;
     private javax.swing.JTable tblEmployee;
+    private javax.swing.JTable tblGiveBack;
+    private javax.swing.JTable tblGiveBackHistory;
     private javax.swing.JTable tblLaptop;
     private javax.swing.JTable tblMonitor;
     private javax.swing.JTable tblPc;
     private javax.swing.JTable tblPhone;
-    private javax.swing.JTextField txtSearchBorrowingById;
     private javax.swing.JTextField txtSearchBorrowingByName;
+    private javax.swing.JTextField txtSearchBorrowingBySerial;
     private javax.swing.JTextField txtSearchBorrowingFrom;
     private javax.swing.JTextField txtSearchBorrowingTo;
     private javax.swing.JTextField txtSearchEmployeeById;
     private javax.swing.JTextField txtSearchEmployeeByName;
+    private javax.swing.JTextField txtSearchGiveBackByEmployeeName;
+    private javax.swing.JTextField txtSearchGiveBackBySerial;
+    private javax.swing.JTextField txtSearchGiveBackFrom;
+    private javax.swing.JTextField txtSearchGiveBackTo;
     private javax.swing.JTextField txtSearchLaptopByName;
     private javax.swing.JTextField txtSearchLaptopByRam;
     private javax.swing.JTextField txtSearchLaptopBySerial;
@@ -2013,6 +2780,9 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
     private javax.swing.JTextField txtSearchPcBySerial;
     private javax.swing.JTextField txtSearchPhoneByImei;
     private javax.swing.JTextField txtSearchPhoneByName;
+    private javax.swing.JLabel txtTotalBorrowing;
+    private javax.swing.JLabel txtTotalEm;
+    private javax.swing.JLabel txtTotalGiveBack;
     // End of variables declaration//GEN-END:variables
 
     private void addButtonGroup() {
@@ -2061,12 +2831,12 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
         buttonGroupSortEmployee.add(rbSortEmployeeIdASC);
         buttonGroupSortEmployee.add(rbSortEmployeeIdDESC);
 
-        buttonGroupSearchBorrowing.add(rbSearchBorrowingById);
-        buttonGroupSearchBorrowing.add(rbSearchBorrowingByName);
+        buttonGroupSearchBorrowing.add(rbSearchBorrowingBySerial);
+        buttonGroupSearchBorrowing.add(rbSearchBorrowingByEmployeeName);
         buttonGroupSearchBorrowing.add(rbSearchBorrowingByDate);
 
-        buttonGroupSortBorrowing.add(rbSortBorrowingNameASC);
-        buttonGroupSortBorrowing.add(rbSortBorrowingNameDESC);
+        buttonGroupSortBorrowing.add(rbSortBorrowingEmployeeNameASC);
+        buttonGroupSortBorrowing.add(rbSortBorrowingEmployeeNameDESC);
         buttonGroupSortBorrowing.add(rbSortBorrowingDateASC);
         buttonGroupSortBorrowing.add(rbSortBorrowingDateDESC);
 
@@ -2158,55 +2928,110 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
         btnAddBorrowing.addActionListener(this);
         btnRefreshBorrowing.addActionListener(this);
         btnRemoveBorrowing.addActionListener(this);
+        btnSearchBorrowing.addActionListener(this);
 
-        rbSearchBorrowingById.addActionListener(this);
-        rbSearchBorrowingByName.addActionListener(this);
+        rbSearchBorrowingBySerial.addActionListener(this);
+        rbSearchBorrowingByEmployeeName.addActionListener(this);
         rbSearchBorrowingByDate.addActionListener(this);
 
-        rbSortBorrowingNameASC.addActionListener(this);
-        rbSortBorrowingNameDESC.addActionListener(this);
+        rbSortBorrowingEmployeeNameASC.addActionListener(this);
+        rbSortBorrowingEmployeeNameDESC.addActionListener(this);
         rbSortBorrowingDateASC.addActionListener(this);
         rbSortBorrowingDateDESC.addActionListener(this);
 
+        //tab quản lý trả thiết bị
+        btnRefreshGiveBack.addActionListener(this);
+        btnSearchGiveBack.addActionListener(this);
+
+        rbSearchGiveBackBySerial.addActionListener(this);
+        rbSearchGiveBackByEmployeeName.addActionListener(this);
+        rbSearchGiveBackByDate.addActionListener(this);
+
+        rbSortGiveBackNameASC.addActionListener(this);
+        rbSortGiveBackNameDESC.addActionListener(this);
+        rbSortGiveBackDateASC.addActionListener(this);
+        rbSortGiveBackDateDESC.addActionListener(this);
+
     }
 
-    public void addPhoneCallback(Phone phone) {  //ở cái table sẽ gọi đến phương 
+    public boolean addPhoneCallback(Phone phone) {  //ở cái table sẽ gọi đến phương 
         //thức vào và truyền đến list phone nhận dược
+        for (Phone p : phones) {
+            if (p.getImei() == phone.getImei()) {
+                var msg = "Số IMEI '" + phone.getImei() + "' đã được thêm vào trước đó!";
+                showDialogMessage(msg);
+                return false;
+            }
+        }
         phones.add(phone);
         showPhone(phone);
         saveData(DataController.PHONE);//lưu phone
+
+        return true;
     }
 
-    public void addPcCallback(Pc pc) {
+    public boolean addPcCallback(Pc pc) {
         //ở cái table sẽ gọi đến phương 
         //thức vào và truyền đến list pc nhận được
+        for (Pc p : pcs) {
+            if (p.getSerial().equals(pc.getSerial())) {
+                var msg = "Số Serial '" + pc.getSerial() + "' đã được thêm vào trước đó!";
+                showDialogMessage(msg);
+                return false;
+            }
+        }
         pcs.add(pc);
         showPc(pc);
         saveData(DataController.PC);//lưu pc
+        return true;
     }
 
-    public void addLaptopCallback(Laptop laptop) {
+    public boolean addLaptopCallback(Laptop laptop) {
         //ở cái table sẽ gọi đến phương 
         //thức vào và truyền đến list laptop nhận được
+        for (Laptop p : laptops) {
+            if (p.getSerial().equals(laptop.getSerial())) {
+                var msg = "Số Serial '" + laptop.getSerial() + "' đã được thêm vào trước đó!";
+                showDialogMessage(msg);
+                return false;
+            }
+        }
         laptops.add(laptop);
         showLaptop(laptop);
         saveData(DataController.LAPTOP);//lưu laptop
+        return true;
     }
 
-    public void addMonitorCallback(Monitor monitor) {
+    public boolean addMonitorCallback(Monitor monitor) {
         //ở cái table sẽ gọi đến phương 
         //thức vào và truyền đến list màn hình nhận được
+        for (Monitor p : monitors) {
+            if (p.getSerial().equals(monitor.getSerial())) {
+                var msg = "Số Serial '" + monitor.getSerial() + "' đã được thêm vào trước đó!";
+                showDialogMessage(msg);
+                return false;
+            }
+        }
         monitors.add(monitor);
         showMonitor(monitor);
         saveData(DataController.MONITOR);//lưu màn hình
+        return true;
     }
 
-    public void addEmployeeCallback(Employee employee) {
+    public boolean addEmployeeCallback(Employee employee) {
         //ở cái table sẽ gọi đến phương 
         //thức vào và truyền đến list nhân viên nhận được
+        for (Employee p : employees) {
+            if (p.getEmployeeId().equals(employee.getEmployeeId())) {
+                var msg = "Số ID '" + employee.getEmployeeId() + "' đã được thêm vào trước đó!";
+                showDialogMessage(msg);
+                return false;
+            }
+        }
         employees.add(employee);
         showEmployee(employee);
         saveData(DataController.EMPLOYEE);//lưu màn hình
+        return true;
     }
 
     public void addBorrowingCallback(Borrowing borrowing) {
@@ -2308,6 +3133,26 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
             refreshEmployees();
         } else if (obj.equals(btnAddBorrowing)) {
             addBorrowing();
+        } else if (obj.equals(rbSortBorrowingEmployeeNameASC)
+                || obj.equals(rbSortBorrowingEmployeeNameDESC)
+                || obj.equals(rbSortBorrowingDateASC)
+                || obj.equals(rbSortBorrowingDateDESC)) {
+            sortBorrowings(obj);
+        } else if (obj.equals(btnSearchBorrowing)) {
+            searchBorrowings();
+        } else if (obj.equals(btnRefreshBorrowing)) {
+            refreshBorrowings();
+        } else if (obj.equals(btnRemoveBorrowing)) {
+            removeBorrowing();
+        } else if (obj.equals(rbSortGiveBackNameASC)
+                || obj.equals(rbSortGiveBackNameDESC)
+                || obj.equals(rbSortGiveBackDateASC)
+                || obj.equals(rbSortGiveBackDateDESC)) {
+            sortGiveBacks(obj);
+        } else if (obj.equals(btnSearchGiveBack)) {
+            searchGiveBacks();
+        } else if (obj.equals(btnRefreshGiveBack)) {
+            refreshGiveBacks();
         }
     }
 
@@ -2353,13 +3198,81 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
     }
 
     private void showBorrowing(Borrowing r) { //hiển thị thông tin lên bảng
-        Object[] row = new Object[]{
-            r.getEmployee().getEmployeeId(), r.getEmployee().getFullName(), 
-            r.getEmployee().getEmployeeDept(), 
-            r.getPhone().getImei(), r.getPhone().getName(),          
-            simpleDateFormat.format(r.getBorrowingDate())           
-        };
+        Object[] row = new Object[]{};
+        if (r.getPhone() != null) {
+            row = new Object[]{
+                r.getEmployee().getEmployeeId(), r.getEmployee().getFullName(),
+                r.getEmployee().getEmployeeDept(),
+                r.getPhone().getImei(), r.getPhone().getName(), "Điện thoại",
+                simpleDateFormat.format(r.getBorrowingDate())
+            };
+        }
+        if (r.getPc() != null) {
+            row = new Object[]{
+                r.getEmployee().getEmployeeId(), r.getEmployee().getFullName(),
+                r.getEmployee().getEmployeeDept(),
+                r.getPc().getSerial(), r.getPc().getName(), "PC",
+                simpleDateFormat.format(r.getBorrowingDate())
+            };
+        }
+        if (r.getLaptop() != null) {
+            row = new Object[]{
+                r.getEmployee().getEmployeeId(), r.getEmployee().getFullName(),
+                r.getEmployee().getEmployeeDept(),
+                r.getLaptop().getSerial(), r.getLaptop().getName(), "Laptop",
+                simpleDateFormat.format(r.getBorrowingDate())
+            };
+        }
+        if (r.getMonitor() != null) {
+            row = new Object[]{
+                r.getEmployee().getEmployeeId(), r.getEmployee().getFullName(),
+                r.getEmployee().getEmployeeDept(),
+                r.getMonitor().getSerial(), r.getMonitor().getName(), "Màn hình",
+                simpleDateFormat.format(r.getBorrowingDate())
+            };
+        }
         tableModelBorrowing.addRow(row); //thêm các thông số bên trên vào bảng
+    }
+
+    private void showGiveBack(GiveBack g) { //hiển thị thông tin lên bảng
+        Object[] row = new Object[]{};
+        // thêm điện thoại vào bảng danh sách trả
+        if (g.getPhone() != null) {
+            row = new Object[]{
+                g.getEmployee().getEmployeeId(), g.getEmployee().getFullName(),
+                g.getEmployee().getEmployeeDept(),
+                g.getPhone().getImei(), g.getPhone().getName(), "Điện thoại",
+                simpleDateFormat.format(g.getGiveBackDate())
+            };
+        }
+        // thêm pc vào bảng danh sách trả
+        if (g.getPc() != null) {
+            row = new Object[]{
+                g.getEmployee().getEmployeeId(), g.getEmployee().getFullName(),
+                g.getEmployee().getEmployeeDept(),
+                g.getPc().getSerial(), g.getPc().getName(), "PC",
+                simpleDateFormat.format(g.getGiveBackDate())
+            };
+        }
+        // thêm laptop vào bảng danh sách trả
+        if (g.getLaptop() != null) {
+            row = new Object[]{
+                g.getEmployee().getEmployeeId(), g.getEmployee().getFullName(),
+                g.getEmployee().getEmployeeDept(),
+                g.getLaptop().getSerial(), g.getLaptop().getName(), "Laptop",
+                simpleDateFormat.format(g.getGiveBackDate())
+            };
+        }
+        // thêm monitor vào bảng danh sách trả
+        if (g.getMonitor() != null) {
+            row = new Object[]{
+                g.getEmployee().getEmployeeId(), g.getEmployee().getFullName(),
+                g.getEmployee().getEmployeeDept(),
+                g.getMonitor().getSerial(), g.getMonitor().getName(), "Màn hình",
+                simpleDateFormat.format(g.getGiveBackDate())
+            };
+        }
+        tableModelGiveBack.addRow(row); //thêm các thông số bên trên vào bảng
     }
 
     private void LoadData() {
@@ -2375,6 +3288,10 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
         employees = dataController.<Employee>readDataFromFile(DataController.EMPLOYEE_FILE);
         //đọc danh sách các màn hình
         borrowings = dataController.<Borrowing>readDataFromFile(DataController.BORROWING_FILE);
+        //đọc danh sách trả
+        giveBacks = dataController.<GiveBack>readDataFromFile(DataController.GIVE_BACK_FILE);
+        txtTotalBorrowing.setText(String.valueOf(borrowings.size()));
+        txtTotalGiveBack.setText(String.valueOf(giveBacks.size()));
     }
 
     private void ShowData() {
@@ -2384,7 +3301,37 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
         showMonitors();
         showEmployees();
         showBorrowings();
+        showGiveBacks();
+        showEmployeeToList(); // hien thi danh sach nhan vien vao jlist
+    }
 
+    /**
+     * Load du lieu nhan vien len jList check nhan vien trung bang set
+     *
+     */
+    private void showEmployeeToList() {
+        DefaultListModel listModel = new DefaultListModel();
+        Set<String> hash_Set = new HashSet<String>();
+        for (Borrowing b : borrowings) {
+//            listModel.addElement(b.getEmployee().getFullName());
+            hash_Set.add(b.getEmployee().getFullName());
+        }
+        for (GiveBack g : giveBacks) {
+
+//            listModel.addElement(g.getEmployee().getFullName());
+            hash_Set.add(g.getEmployee().getFullName());
+        }
+        Object[] arr = hash_Set.toArray();
+        for (int i = 0; i < arr.length; i++) {
+            listModel.addElement(arr[i]);
+
+        }
+
+        jListEmployee.setModel(listModel);
+        /**
+         * set total size for employee and display on Statistic
+         */
+        txtTotalEm.setText(String.valueOf(employees.size()));
     }
 
     private void showPhones() {
@@ -2429,6 +3376,20 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
         }
     }
 
+    private void showBorrowingsSearch(List<Borrowing> borrowings) {
+        tableModelBorrowing.setRowCount(0); //xóa hết dữ liệu cũ rồi mới hiển thị lại
+        for (Borrowing r : borrowings) {
+            showBorrowing(r);
+        }
+    }
+
+    private void showGiveBacks() {
+        tableModelGiveBack.setRowCount(0); //xóa hết dữ liệu cũ rồi mới hiển thị lại
+        for (GiveBack g : giveBacks) {
+            showGiveBack(g);
+        }
+    }
+
     private void saveData(int choice) {
         switch (choice) {
             case DataController.PHONE:
@@ -2454,6 +3415,10 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
             case DataController.BORROWING:
                 dataController.<Borrowing>writeToFile(borrowings,
                         DataController.BORROWING_FILE);
+                break;
+            case DataController.GIVE_BACK:
+                dataController.<GiveBack>writeToFile(giveBacks,
+                        DataController.GIVE_BACK_FILE);
                 break;
         }
     }
@@ -2541,6 +3506,48 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
                 tableModelEmployee.removeRow(selectedIndex); //xóa khỏi bảng
                 dataController.<Employee>writeToFile(employees,
                         DataController.EMPLOYEE_FILE);
+            }
+        } else {
+            var msg = "Vui lòng chọn 1 bản ghi để xóa!";
+            showDialogMessage(msg);
+        }
+    }
+
+    // thêm vào danh sách trả thiết bị
+    private void addNewGiveBack(Borrowing r) {
+        var currentTime = new Date();
+        var format = "dd/MM/yyyy HH:mm:ss";
+        var dateFormat = new SimpleDateFormat(format);
+        // thêm mới một record vào danh sách trả
+        GiveBack g = new GiveBack(
+                r.getEmployee(), r.getPhone(), r.getPc(), r.getLaptop(), r.getMonitor(), currentTime
+        );
+        giveBacks.add(g);
+        showGiveBack(g);
+        saveData(DataController.GIVE_BACK);//lưu phone
+        txtTotalGiveBack.setText(String.valueOf(giveBacks.size()));
+
+    }
+
+    // xóa mượn (trả thiết bị)
+    private void removeBorrowing() {
+        int selectedIndex = tblBorrowing.getSelectedRow();//chọn dòng cần xóa
+        //chỉ số dòng trong bảng chính là chỉ số dòng trong danh sách
+        if (selectedIndex > -1) {
+            var msg = "Bạn có chắc chắn muốn trả thiết bị này không?";
+            int confirm = JOptionPane.showConfirmDialog(rootPane, msg);
+            if (confirm == JOptionPane.OK_OPTION) {
+                // thêm vào danh sách trả
+                Borrowing r = borrowings.get(selectedIndex);
+                addNewGiveBack(r);
+                for(Borrowing p: borrowings) {
+                    System.out.println(p);
+                }
+                borrowings.removeIf(b -> b.getId().equals(r.getId())); //xóa khỏi danh sách
+                tableModelBorrowing.removeRow(selectedIndex); //xóa khỏi bảng
+                dataController.<Borrowing>writeToFile(borrowings, DataController.BORROWING_FILE);
+                txtTotalBorrowing.setText(String.valueOf(borrowings.size()));
+                LoadData();
             }
         } else {
             var msg = "Vui lòng chọn 1 bản ghi để xóa!";
@@ -2752,6 +3759,34 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
         showEmployees();
     }
 
+    // sort borrowing by name, borrowing date
+    private void sortBorrowings(Object obj) {
+        if (obj.equals(rbSortBorrowingEmployeeNameASC)) {
+            dataController.sortBorrowingByEmployeeNameASC(borrowings);
+        } else if (obj.equals(rbSortBorrowingEmployeeNameDESC)) {
+            dataController.sortBorrowingByEmployeeNameDESC(borrowings);
+        } else if (obj.equals(rbSortBorrowingDateASC)) {
+            dataController.sortBorrowingDateASC(borrowings);
+        } else if (obj.equals(rbSortBorrowingDateDESC)) {
+            dataController.sortBorrowingDateDESC(borrowings);
+        }
+        showBorrowings();
+    }
+
+    // sort give back by name, give back date
+    private void sortGiveBacks(Object obj) {
+        if (obj.equals(rbSortGiveBackNameASC)) {
+            dataController.sortGiveBackByEmployeeNameASC(giveBacks);
+        } else if (obj.equals(rbSortGiveBackNameDESC)) {
+            dataController.sortGiveBackByEmployeeNameDESC(giveBacks);
+        } else if (obj.equals(rbSortGiveBackDateASC)) {
+            dataController.sortGiveBackDateASC(giveBacks);
+        } else if (obj.equals(rbSortGiveBackDateDESC)) {
+            dataController.sortGiveBackDateDESC(giveBacks);
+        }
+        showGiveBacks();
+    }
+
     private void searchPhones() {
         if (rbSearchPhoneByImei.isSelected()) {
             var key = txtSearchPhoneByImei.getText();
@@ -2944,6 +3979,103 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
         }
     }
 
+    // tìm kiếm thiết bị mượn
+    private void searchBorrowings() {
+        if (rbSearchBorrowingBySerial.isSelected()) {   // tìm kiếm theo số serial
+            var key = txtSearchBorrowingBySerial.getText();
+            if (key.isEmpty()) {
+                var msg = "Vui lòng nhập số IMEI/Serial cần tìm kiếm!";
+                showDialogMessage(msg);
+            } else {
+                var result = dataController.searchBorrowingBySerial(borrowings, key);
+                List<Borrowing> borrowings = new ArrayList<>();
+                borrowings.clear();
+                borrowings.addAll(result);
+                checkAndShowSearchBorrowings(borrowings);
+            }
+        } else if (rbSearchBorrowingByEmployeeName.isSelected()) {  // tìm kiếm theo nhân viên
+            var key = txtSearchBorrowingByName.getText();
+            if (key.isEmpty()) {
+                var msg = "Vui lòng nhập tên nhân viên cần tìm kiếm!";
+                showDialogMessage(msg);
+            } else {
+                var result = dataController.searchBorrowingByEmployeeName(borrowings, key);
+                List<Borrowing> borrowings = new ArrayList<>();
+                borrowings.clear();
+                borrowings.addAll(result);
+                checkAndShowSearchBorrowings(borrowings);
+            }
+        } else if (rbSearchBorrowingByDate.isSelected()) {  // tìm kiếm theo ngày
+            var fromDate = txtSearchBorrowingFrom.getText();
+            var toDate = txtSearchBorrowingTo.getText();
+            if (fromDate.isEmpty() || toDate.isEmpty()) {   // kiểm tra ngày đã nhập hay chưa
+                var msg = "Vui lòng nhập thời gian cần tìm kiếm!";
+                showDialogMessage(msg);
+            } else {
+                if (fromDate.equals(toDate)) {  // kiểm tra khi từ ngày = đến ngày
+                    var msg = "Vui lòng nhập từ ngày và đến ngày khác nhau!";
+                    showDialogMessage(msg);
+                } else {
+                    var result = dataController.searchBorrowingByDate(borrowings, fromDate, toDate);
+                    List<Borrowing> borrowings = new ArrayList<>();
+                    borrowings.clear();
+                    borrowings.addAll(result);
+                    checkAndShowSearchBorrowings(borrowings);
+                }
+            }
+        } else {
+            var msg = "Vui lòng chọn tiêu chí tìm kiếm trước!";
+            showDialogMessage(msg);
+        }
+    }
+
+    // tìm kiếm thiết bị trả
+    private void searchGiveBacks() {
+        if (rbSearchGiveBackBySerial.isSelected()) {    // tìm kiếm theo số serial
+            var key = txtSearchGiveBackBySerial.getText();
+            if (key.isEmpty()) {
+                var msg = "Vui lòng nhập số IMEI/Serial cần tìm kiếm!";
+                showDialogMessage(msg);
+            } else {
+                var result = dataController.searchGiveBackBySerial(giveBacks, key);
+                giveBacks.clear();
+                giveBacks.addAll(result);
+                checkAndShowSearchGiveBacks();
+            }
+        } else if (rbSearchGiveBackByEmployeeName.isSelected()) {   // tìm kiếm theo nhân viên
+            var key = txtSearchGiveBackByEmployeeName.getText();
+            if (key.isEmpty()) {
+                var msg = "Vui lòng nhập tên nhân viên cần tìm kiếm!";
+                showDialogMessage(msg);
+            } else {
+                var result = dataController.searchGiveBackByEmployeeName(giveBacks, key);
+                giveBacks.clear();
+                giveBacks.addAll(result);
+                checkAndShowSearchGiveBacks();
+            }
+        } else if (rbSearchGiveBackByDate.isSelected()) {   // tìm kiếm theo ngày
+            var fromDate = txtSearchGiveBackFrom.getText();
+            var toDate = txtSearchGiveBackTo.getText();
+            if (fromDate.isEmpty() || toDate.isEmpty()) {
+                var msg = "Vui lòng nhập thời gian cần tìm kiếm!";
+                showDialogMessage(msg);
+            } else {
+                if (fromDate.equals(toDate)) {  // kiểm tra khi từ ngày = đến ngày
+                    var msg = "Vui lòng nhập từ ngày và đến ngày khác nhau!";
+                    showDialogMessage(msg);
+                } else {
+                    var result = dataController.searchGiveBackByDate(giveBacks, fromDate, toDate);
+                    giveBacks.clear();
+                    giveBacks.addAll(result);
+                    checkAndShowSearchGiveBacks();
+                }
+            }
+        } else {
+            var msg = "Vui lòng chọn tiêu chí tìm kiếm trước!";
+            showDialogMessage(msg);
+        }
+    }
+
     private void checkAndShowSearchResult() {
         if (phones.size() > 0) {
             showPhones();
@@ -3004,6 +4136,34 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
         } else {
             employees.clear();
             showEmployees();
+            var msg = "Không tìm thấy kết quả nào";
+            showDialogMessage(msg);
+        }
+    }
+
+    // kiểm tra và hiển thị thông tin sao khi sau khi tìm kiếm thiết bị mượn
+    private void checkAndShowSearchBorrowings(List<Borrowing> borrowings) {
+        if (borrowings.size() > 0) {
+            showBorrowingsSearch(borrowings);
+            var msg = "Tìm thấy " + borrowings.size() + " kết quả";
+            showDialogMessage(msg);
+        } else {
+            borrowings.clear();
+            showBorrowingsSearch(borrowings);
+            var msg = "Không tìm thấy kết quả nào";
+            showDialogMessage(msg);
+        }
+    }
+
+    // kiểm tra và hiển thị thông tin sao khi sau khi tìm kiếm thiết bị trả
+    private void checkAndShowSearchGiveBacks() {
+        if (giveBacks.size() > 0) {
+            showGiveBacks();
+            var msg = "Tìm thấy " + giveBacks.size() + " kết quả";
+            showDialogMessage(msg);
+        } else {
+            giveBacks.clear();
+            showGiveBacks();
             var msg = "Không tìm thấy kết quả nào";
             showDialogMessage(msg);
         }
@@ -3079,10 +4239,42 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
 
     }
 
+    // làm mới dữ liệu trong bảng mượn
+    private void refreshBorrowings() {
+        var text = "";
+        txtSearchBorrowingBySerial.setText(text);
+        txtSearchBorrowingByName.setText(text);
+        txtSearchBorrowingFrom.setText(text);
+        txtSearchBorrowingTo.setText(text);
+        buttonGroupSortBorrowing.clearSelection();
+        buttonGroupSearchBorrowing.clearSelection();
+        // xóa và thêm mới dữ liệu
+        borrowings.clear();
+        borrowings.addAll(dataController.<Borrowing>readDataFromFile(DataController.BORROWING_FILE));
+        showBorrowings();
+    }
+
+    // làm mới dữ liệu trong bảng trả
+    private void refreshGiveBacks() {
+        var text = "";
+        txtSearchGiveBackBySerial.setText(text);
+        txtSearchGiveBackByEmployeeName.setText(text);
+        txtSearchGiveBackFrom.setText(text);
+        txtSearchGiveBackTo.setText(text);
+        buttonGroupSortGiveBack.clearSelection();
+        buttonGroupSearchGiveBack.clearSelection();
+        // xóa và thêm mới dữ liệu
+        giveBacks.clear();
+        giveBacks.addAll(dataController.<GiveBack>readDataFromFile(DataController.GIVE_BACK_FILE));
+        showGiveBacks();
+    }
+
     private void addBorrowing() {
+        // hiển thị hộp thoại thêm các thiết bị và nhân viên
         AddBorrowingDialog addBorrowingDialog
                 = new AddBorrowingDialog(this, true, employees, phones, borrowings, pcs, laptops, monitors);
         addBorrowingDialog.setVisible(true);
+        txtTotalBorrowing.setText(String.valueOf(borrowings.size()));
     }
 
 }

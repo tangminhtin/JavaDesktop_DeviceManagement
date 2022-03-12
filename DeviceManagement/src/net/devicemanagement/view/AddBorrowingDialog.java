@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 import javax.swing.JOptionPane;
 import net.devicemanagement.controller.InfoFilterImp;
 import net.devicemanagement.view.model.Borrowing;
@@ -46,10 +47,10 @@ public class AddBorrowingDialog extends javax.swing.JDialog implements ActionLis
         initComponents();
         setLocationRelativeTo(null);
         addActionListener();
-        phone = new Phone();
-        pc = new Pc();
-        laptop = new Laptop();
-        monitor = new Monitor();
+        phone = null;
+        pc = null;
+        laptop = null;
+        monitor = null;
         homeFrm = (HomeFrm) parent;
     }
 
@@ -57,6 +58,7 @@ public class AddBorrowingDialog extends javax.swing.JDialog implements ActionLis
             List<Employee> employees, List<Phone> phones,
             List<Borrowing> borrowings, List<Pc> pcs, List<Laptop> laptops, List<Monitor> monitors) {
         this(parent, modal);
+        // nhận các tham chiếu của employees, phones, borrowings, pcs, laptops, monitors
         this.employees = employees;
         this.phones = phones;
         this.borrowings = borrowings;
@@ -502,24 +504,94 @@ public class AddBorrowingDialog extends javax.swing.JDialog implements ActionLis
     }
 
     private void addNewBorrowing() {
-        if (employee == null || phone == null) {
+
+        // kiểm tra khi người dùng chưa nhập thông tin thiết bị
+        if (txtDeviceId.getText().isBlank() || txtDeviceName.getText().isBlank() || txtDeviceType.getText().isBlank()) {
+            var msg = "Bạn chưa nhập thông tin thiết bị!";
+            showMessage(msg);
+        } else if (employee == null) {  // kiểm tra khi chưa có thông tin nhân viên
             var msg = "Vui lòng nhập vào mã nhân viên và số IMEI trước!";
             showMessage(msg);
         } else {
+            // lấy thời gian hiện tại
             var currentTime = new Date();
             var format = "dd/MM/yyyy HH:mm:ss";
             var dateFormat = new SimpleDateFormat(format);
             txtBorrowingDate.setText(dateFormat.format(currentTime));
             var checker = new InfoFilterImp();
-            Borrowing r = new Borrowing(employee, phone, currentTime);
+            String uniqueID = UUID.randomUUID().toString();
+            Borrowing r = new Borrowing(employee, phone, pc, laptop, monitor, currentTime, uniqueID); // thêm vào danh sách mượn
+
+            // kiểm tra danh sách mượn, xem có nhân viên nào đã mượn thiết bị bị đó chưa
+            for (Borrowing b : borrowings) {
+                // kiểm tra thiết bị điện thoại
+                if (r.getPhone() != null && b.getPhone() != null && r.getPc() == null && r.getLaptop() == null && r.getMonitor() == null) {
+                    if (b.getPhone().getImei() == r.getPhone().getImei()) {
+                        var msg = "Thiết bị có IMEI '" + r.getPhone().getImei() + "' đã có người mượn trước đó";
+                        phone = null;
+                        showMessage(msg);
+                        return;
+                    }
+                } else if (r.getPc() != null && b.getPc() != null && r.getPhone() == null && r.getLaptop() == null && r.getMonitor() == null) { // kiểm tra thiết bị pc
+                    if (b.getPc().getSerial().equals(r.getPc().getSerial())) {
+                        var msg = "Thiết bị có Serial '" + r.getPc().getSerial() + "' đã có người mượn trước đó";
+                        pc = null;
+                        showMessage(msg);
+                        return;
+                    }
+                } else if (r.getLaptop() != null && b.getLaptop() != null && r.getPc() == null && r.getPhone() == null && r.getMonitor() == null) {    // kiểm tra thiết bị laptop
+                    if (b.getLaptop().getSerial().equals(r.getLaptop().getSerial())) {
+                        var msg = "Thiết bị có Serial '" + r.getLaptop().getSerial() + "' đã có người mượn trước đó";
+                        laptop = null;
+                        showMessage(msg);
+                        return;
+                    }
+                } else if (r.getMonitor() != null && b.getMonitor() != null && r.getPc() == null && r.getLaptop() == null && r.getPhone() == null) {  // kiểm tra thiết bị monitor
+                    if (b.getMonitor().getSerial().equals(r.getMonitor().getSerial())) {
+                        var msg = "Thiết bị có Serial '" + r.getMonitor().getSerial() + "' đã có người mượn trước đó";
+                        monitor = null;
+                        showMessage(msg);
+                        return;
+                    }
+                }
+            }
+
+            if (phone == null && pc == null && laptop == null & monitor == null) {
+                return;
+            }
+            // kiểm tra xem mình đã mượn thiết bị hay chưa
             if (checker.isRecordExist(borrowings, r)) {
-                var msg = "Nhân viên " + employee.getFullName() + " đã "
-                        + "mượn điện thoại " + phone.getName() + " trước đó.";
-                showMessage(msg);
+//                if (r.getPhone() != null) {
+//                    var msg = "Nhân viên " + r.getEmployee().getFullName() + " đã "
+//                            + "mượn điện thoại " + r.getPhone().getName() + " trước đó.";
+//                    showMessage(msg);
+//                } else if (r.getPc() != null) {
+//                    var msg = "Nhân viên " + r.getEmployee().getFullName() + " đã "
+//                            + "mượn điện thoại " + r.getPc().getName() + " trước đó.";
+//                    showMessage(msg);
+//                } else if (r.getLaptop() != null) {
+//                    var msg = "Nhân viên " + r.getEmployee().getFullName() + " đã "
+//                            + "mượn điện thoại " + r.getLaptop().getName() + " trước đó.";
+//                    showMessage(msg);
+//                } else if (r.getMonitor() != null) {
+//                    var msg = "Nhân viên " + r.getEmployee().getFullName() + " đã "
+//                            + "mượn điện thoại " + r.getMonitor().getName() + " trước đó.";
+//                    showMessage(msg);
+//                }
+                if (r.getPhone() != null || r.getPc() != null || r.getLaptop() != null || r.getMonitor() != null) {
+                    var msg = "Nhân viên " + r.getEmployee().getFullName() + " đã mượn sản phẩm này trước đó.";
+                    showMessage(msg);
+                }
             } else {
+                // thêm mới vào bảng
+                System.out.println(r);
                 homeFrm.addBorrowingCallback(r);
-                var msg = "Mượn điện thoại thành công!";
+                var msg = "Bạn đã mượn sản phẩm thành công!";
                 showMessage(msg);
+                phone = null;
+                pc = null;
+                laptop = null;
+                monitor = null;
 //                dispose();
             }
         }
@@ -554,7 +626,6 @@ public class AddBorrowingDialog extends javax.swing.JDialog implements ActionLis
     }
 
     private void searchDevice() {
-
         var deviceIdStr = txtDeviceIdToSearch.getText();
         if (deviceIdStr.isEmpty()) {
             var msg = "Vui lòng nhập số IMEI/Serial thiết bị cần tìm!";
@@ -566,7 +637,7 @@ public class AddBorrowingDialog extends javax.swing.JDialog implements ActionLis
             var s4 = "Màn hình";
             var type = comboType.getSelectedItem().toString();
             if (type.equals(s1)) {
-                try {
+                try {   // try catch để bắt lỗi khi người dùng nhập chữ vào trường dữ liệu IMEI của phone
                     phone = null;
                     var phoneImei = Long.parseLong(deviceIdStr);
                     for (Phone p : phones) {

@@ -13,7 +13,7 @@ import java.util.Objects;
  * @author anhbt
  */
 public class Person implements Serializable {
-
+    private static final long serialVersionUID = -3636703009111654723L;
     private String id;
     private String address;
     private String phoneNumber;
@@ -60,6 +60,11 @@ public class Person implements Serializable {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    @Override
+    public String toString() {
+        return "Person{" + "id=" + id + ", address=" + address + ", phoneNumber=" + phoneNumber + ", fullName=" + fullName + ", dob=" + dob + '}';
     }
 
     public String getFullName() {
