@@ -13,6 +13,7 @@ import java.util.Objects;
  * @author Tuan Anh
  */
 public class Borrowing implements Serializable {
+
     private static final long serialVersionUID = -369376598309559634L;
     private Employee employee;
     private Phone phone;
@@ -20,25 +21,27 @@ public class Borrowing implements Serializable {
     private Laptop laptop;
     private Monitor monitor;
     private Date borrowingDate;
+    private String id;
 
     public Borrowing() {
     }
 
-    public Borrowing(Employee employee, Phone phone, Date borrowingDate) {
-        this.employee = employee;
-        this.phone = phone;
-        this.borrowingDate = borrowingDate;
-    }
+//    public Borrowing(Employee employee, Phone phone, Date borrowingDate) {
+//        this.employee = employee;
+//        this.phone = phone;
+//        this.borrowingDate = borrowingDate;
+//    }
 
-    public Borrowing(Employee employee, Phone phone, Pc pc, Laptop laptop, Monitor monitor, Date borrowingDate) {
+    public Borrowing(Employee employee, Phone phone, Pc pc, Laptop laptop, Monitor monitor, Date borrowingDate, String id) {
         this.employee = employee;
         this.phone = phone;
         this.pc = pc;
         this.laptop = laptop;
         this.monitor = monitor;
         this.borrowingDate = borrowingDate;
+        this.id = id;
     }
-    
+
     public Employee getEmployee() {
         return employee;
     }
@@ -61,6 +64,14 @@ public class Borrowing implements Serializable {
 
     public void setBorrowingDate(Date borrowingDate) {
         this.borrowingDate = borrowingDate;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     @Override
@@ -89,22 +100,25 @@ public class Borrowing implements Serializable {
         if (!Objects.equals(this.phone, other.phone)) {
             return false;
         }
-        
+
         if (!Objects.equals(this.pc, other.pc)) {
             return false;
         }
-        
+
         if (!Objects.equals(this.laptop, other.laptop)) {
             return false;
         }
-        
+
         if (!Objects.equals(this.monitor, other.monitor)) {
+            return false;
+        }
+        if (!Objects.equals(this.id, other.id)) {
             return false;
         }
         return true;
     }
-    
-        public Pc getPc() {
+
+    public Pc getPc() {
         return pc;
     }
 
@@ -130,8 +144,7 @@ public class Borrowing implements Serializable {
 
     @Override
     public String toString() {
-        return "Borrowing{" + "employee=" + employee + ", phone=" + phone + ", pc=" + pc + ", laptop=" + laptop + ", monitor=" + monitor + ", borrowingDate=" + borrowingDate + '}';
+        return "Borrowing{" + "employee=" + employee + ", phone=" + phone + ", pc=" + pc + ", laptop=" + laptop + ", monitor=" + monitor + ", borrowingDate=" + borrowingDate + ", id=" + id + "'}'";
     }
 
-   
 }

@@ -3376,6 +3376,13 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
         }
     }
 
+    private void showBorrowingsSearch(List<Borrowing> borrowings) {
+        tableModelBorrowing.setRowCount(0); //xóa hết dữ liệu cũ rồi mới hiển thị lại
+        for (Borrowing r : borrowings) {
+            showBorrowing(r);
+        }
+    }
+
     private void showGiveBacks() {
         tableModelGiveBack.setRowCount(0); //xóa hết dữ liệu cũ rồi mới hiển thị lại
         for (GiveBack g : giveBacks) {
@@ -3533,11 +3540,14 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
                 // thêm vào danh sách trả
                 Borrowing r = borrowings.get(selectedIndex);
                 addNewGiveBack(r);
-
-                borrowings.remove(selectedIndex); //xóa khỏi danh sách
+                for(Borrowing p: borrowings) {
+                    System.out.println(p);
+                }
+                borrowings.removeIf(b -> b.getId().equals(r.getId())); //xóa khỏi danh sách
                 tableModelBorrowing.removeRow(selectedIndex); //xóa khỏi bảng
                 dataController.<Borrowing>writeToFile(borrowings, DataController.BORROWING_FILE);
                 txtTotalBorrowing.setText(String.valueOf(borrowings.size()));
+                LoadData();
             }
         } else {
             var msg = "Vui lòng chọn 1 bản ghi để xóa!";
@@ -3978,9 +3988,10 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
                 showDialogMessage(msg);
             } else {
                 var result = dataController.searchBorrowingBySerial(borrowings, key);
+                List<Borrowing> borrowings = new ArrayList<>();
                 borrowings.clear();
                 borrowings.addAll(result);
-                checkAndShowSearchBorrowings();
+                checkAndShowSearchBorrowings(borrowings);
             }
         } else if (rbSearchBorrowingByEmployeeName.isSelected()) {  // tìm kiếm theo nhân viên
             var key = txtSearchBorrowingByName.getText();
@@ -3989,9 +4000,10 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
                 showDialogMessage(msg);
             } else {
                 var result = dataController.searchBorrowingByEmployeeName(borrowings, key);
+                List<Borrowing> borrowings = new ArrayList<>();
                 borrowings.clear();
                 borrowings.addAll(result);
-                checkAndShowSearchBorrowings();
+                checkAndShowSearchBorrowings(borrowings);
             }
         } else if (rbSearchBorrowingByDate.isSelected()) {  // tìm kiếm theo ngày
             var fromDate = txtSearchBorrowingFrom.getText();
@@ -4005,9 +4017,10 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
                     showDialogMessage(msg);
                 } else {
                     var result = dataController.searchBorrowingByDate(borrowings, fromDate, toDate);
+                    List<Borrowing> borrowings = new ArrayList<>();
                     borrowings.clear();
                     borrowings.addAll(result);
-                    checkAndShowSearchBorrowings();
+                    checkAndShowSearchBorrowings(borrowings);
                 }
             }
         } else {
@@ -4129,14 +4142,14 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
     }
 
     // kiểm tra và hiển thị thông tin sao khi sau khi tìm kiếm thiết bị mượn
-    private void checkAndShowSearchBorrowings() {
+    private void checkAndShowSearchBorrowings(List<Borrowing> borrowings) {
         if (borrowings.size() > 0) {
-            showBorrowings();
+            showBorrowingsSearch(borrowings);
             var msg = "Tìm thấy " + borrowings.size() + " kết quả";
             showDialogMessage(msg);
         } else {
             borrowings.clear();
-            showBorrowings();
+            showBorrowingsSearch(borrowings);
             var msg = "Không tìm thấy kết quả nào";
             showDialogMessage(msg);
         }
