@@ -49,6 +49,8 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
     private DefaultTableModel tableModelBorrowing;
     private DefaultTableModel tableModelGiveBack;
     private SimpleDateFormat simpleDateFormat;
+    private List<Borrowing> borrowingsSearchList; //tạo list danh sách mượn
+    private boolean isBorrowingSearch = false;
 
     /**
      * Creates new form HomeFrm
@@ -73,6 +75,7 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
         //khi ứng dụng được kích hoạt, dữ liệu tự load và hiển thị lên
         dataController = new DataControllerImp();
         simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        borrowingsSearchList = new ArrayList<>();
         LoadData();
         ShowData();
     }
@@ -3538,15 +3541,28 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
             int confirm = JOptionPane.showConfirmDialog(rootPane, msg);
             if (confirm == JOptionPane.OK_OPTION) {
                 // thêm vào danh sách trả
-                Borrowing r = borrowings.get(selectedIndex);
-                addNewGiveBack(r);
-                for(Borrowing p: borrowings) {
-                    System.out.println(p);
+                if (isBorrowingSearch) {
+                    Borrowing r = borrowingsSearchList.get(selectedIndex);
+                    System.out.println("Borrowing Search");
+                    System.out.println(r);
+                    addNewGiveBack(r);
+
+                    borrowings.removeIf(b -> b.getId().equals(r.getId())); //xóa khỏi danh sách
+                    tableModelBorrowing.removeRow(selectedIndex); //xóa khỏi bảng
+                    dataController.<Borrowing>writeToFile(borrowings, DataController.BORROWING_FILE);
+                    txtTotalBorrowing.setText(String.valueOf(borrowings.size()));
+                } else {
+                    Borrowing r = borrowings.get(selectedIndex);
+                    System.out.println("Borrowing");
+                    System.out.println(r);
+                    addNewGiveBack(r);
+
+                    borrowings.removeIf(b -> b.getId().equals(r.getId())); //xóa khỏi danh sách
+                    tableModelBorrowing.removeRow(selectedIndex); //xóa khỏi bảng
+                    dataController.<Borrowing>writeToFile(borrowings, DataController.BORROWING_FILE);
+                    txtTotalBorrowing.setText(String.valueOf(borrowings.size()));
                 }
-                borrowings.removeIf(b -> b.getId().equals(r.getId())); //xóa khỏi danh sách
-                tableModelBorrowing.removeRow(selectedIndex); //xóa khỏi bảng
-                dataController.<Borrowing>writeToFile(borrowings, DataController.BORROWING_FILE);
-                txtTotalBorrowing.setText(String.valueOf(borrowings.size()));
+
                 LoadData();
             }
         } else {
@@ -3981,6 +3997,7 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
 
     // tìm kiếm thiết bị mượn
     private void searchBorrowings() {
+        isBorrowingSearch = true;
         if (rbSearchBorrowingBySerial.isSelected()) {   // tìm kiếm theo số serial
             var key = txtSearchBorrowingBySerial.getText();
             if (key.isEmpty()) {
@@ -3988,10 +4005,10 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
                 showDialogMessage(msg);
             } else {
                 var result = dataController.searchBorrowingBySerial(borrowings, key);
-                List<Borrowing> borrowings = new ArrayList<>();
-                borrowings.clear();
-                borrowings.addAll(result);
-                checkAndShowSearchBorrowings(borrowings);
+                borrowingsSearchList = new ArrayList<>();
+                borrowingsSearchList.clear();
+                borrowingsSearchList.addAll(result);
+                checkAndShowSearchBorrowings(borrowingsSearchList);
             }
         } else if (rbSearchBorrowingByEmployeeName.isSelected()) {  // tìm kiếm theo nhân viên
             var key = txtSearchBorrowingByName.getText();
@@ -4000,10 +4017,10 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
                 showDialogMessage(msg);
             } else {
                 var result = dataController.searchBorrowingByEmployeeName(borrowings, key);
-                List<Borrowing> borrowings = new ArrayList<>();
-                borrowings.clear();
-                borrowings.addAll(result);
-                checkAndShowSearchBorrowings(borrowings);
+                borrowingsSearchList = new ArrayList<>();
+                borrowingsSearchList.clear();
+                borrowingsSearchList.addAll(result);
+                checkAndShowSearchBorrowings(borrowingsSearchList);
             }
         } else if (rbSearchBorrowingByDate.isSelected()) {  // tìm kiếm theo ngày
             var fromDate = txtSearchBorrowingFrom.getText();
@@ -4017,10 +4034,10 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
                     showDialogMessage(msg);
                 } else {
                     var result = dataController.searchBorrowingByDate(borrowings, fromDate, toDate);
-                    List<Borrowing> borrowings = new ArrayList<>();
-                    borrowings.clear();
-                    borrowings.addAll(result);
-                    checkAndShowSearchBorrowings(borrowings);
+                    borrowingsSearchList = new ArrayList<>();
+                    borrowingsSearchList.clear();
+                    borrowingsSearchList.addAll(result);
+                    checkAndShowSearchBorrowings(borrowingsSearchList);
                 }
             }
         } else {
@@ -4241,6 +4258,7 @@ public class HomeFrm extends javax.swing.JFrame implements ActionListener {
 
     // làm mới dữ liệu trong bảng mượn
     private void refreshBorrowings() {
+        isBorrowingSearch = false;
         var text = "";
         txtSearchBorrowingBySerial.setText(text);
         txtSearchBorrowingByName.setText(text);
